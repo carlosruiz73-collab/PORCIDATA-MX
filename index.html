@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PorciData MX — Inteligencia Artificial para la Porcicultura</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+:root {
+  --orange: #FF6A00;
+  --orange-light: #FF8C3A;
+  --orange-dim: rgba(255,106,0,0.12);
+  --black: #0A0A08;
+  --dark: #111110;
+  --card: #161614;
+  --border: rgba(255,106,0,0.15);
+  --text: #B8B8A8;
+  --white: #F0F0E8;
+  --neon: #39FF14;
+  --neon-dim: rgba(57,255,20,0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── CURSOR ── */
+* { cursor: crosshair; }
+a, button { cursor: crosshair; }
+
+/* ── GRAIN ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10,10,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.nav-brand span { color: var(--orange); }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--orange); }
+
+.nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange);
+  padding: 0.5rem 1.2rem;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.nav-cta:hover {
+  background: var(--orange);
+  color: var(--black);
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 3rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 50%, rgba(255,106,0,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(57,255,20,0.04) 0%, transparent 60%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,106,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,106,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+}
+
+.hero-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: var(--orange);
+}
+
+.hero-headline {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.hero-headline .accent { color: var(--orange); }
+.hero-headline .mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6em;
+  color: var(--neon);
+  display: block;
+  letter-spacing: 0.02em;
+  margin-top: 0.3em;
+}
+
+.hero-sub {
+  margin-top: 2.5rem;
+  max-width: 520px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.6s;
+}
+
+.hero-actions {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(240,240,232,0.2);
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.hero-metrics {
+  margin-top: 5rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1s;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.metric { }
+.metric-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.metric-val span { color: var(--orange); }
+.metric-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.5);
+  margin-top: 0.3rem;
+}
+
+/* ── SECTIONS GENERAL ── */
+section { padding: 7rem 3rem; }
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.section-tag::before { content: '//'; }
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+
+.section-title span { color: var(--orange); }
+
+.section-body {
+  max-width: 560px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+/* ── PROBLEMA ── */
+.problema {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.problema-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.problema-points {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.problema-point {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  background: rgba(255,106,0,0.03);
+  transition: border-color 0.2s;
+}
+
+.problema-point:hover { border-color: rgba(255,106,0,0.4); }
+
+.pp-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.pp-text { font-size: 0.85rem; line-height: 1.6; }
+.pp-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.stats-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.stat-cell {
+  background: var(--card);
+  padding: 2rem;
+  text-align: center;
+}
+
+.stat-big {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2.8rem;
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.stat-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.5);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+/* ── SOLUCIÓN ── */
+.solucion { max-width: 1100px; margin: 0 auto; }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.feature {
+  background: var(--card);
+  padding: 2.5rem;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.feature:hover { background: rgba(255,106,0,0.04); }
+.feature:hover::before { transform: scaleX(1); }
+
+.feature-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,106,0,0.4);
+  margin-bottom: 1rem;
+}
+
+.feature-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+
+.feature-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
+}
+
+.feature-text { font-size: 0.82rem; line-height: 1.7; color: var(--text); }
+
+/* ── MÉTRICAS TÉCNICAS ── */
+.metricas {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.metricas-inner { max-width: 1100px; margin: 0 auto; }
+
+.metricas-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+  margin-bottom: 4rem;
+}
+
+.progress-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
+
+.progress-item {}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+.progress-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.progress-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--orange);
+  font-size: 0.9rem;
+}
+.progress-bar {
+  height: 4px;
+  background: rgba(255,106,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--orange);
+  transition: width 1.5s ease;
+}
+.progress-fill.neon { background: var(--neon); }
+.progress-sub {
+  font-size: 0.68rem;
+  color: rgba(176,176,160,0.4);
+  margin-top: 0.3rem;
+  font-family: 'DM Mono', monospace;
+}
+
+.epoch-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+}
+
+.epoch-table th {
+  text-align: left;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: rgba(176,176,160,0.5);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+}
+
+.epoch-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255,106,0,0.06);
+  color: var(--text);
+}
+
+.epoch-table tr:last-child td { border-bottom: none; color: var(--white); font-weight: 500; }
+.epoch-table tr:last-child td:first-child { color: var(--orange); }
+
+.val-good { color: var(--neon) !important; }
+
+/* ── ROADMAP ── */
+.roadmap { max-width: 1100px; margin: 0 auto; }
+
+.road-items { margin-top: 4rem; position: relative; padding-left: 2rem; }
+
+.road-items::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--orange), rgba(255,106,0,0.1));
+}
+
+.road-item {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-left: 2rem;
+}
+
+.road-item::before {
+  content: '';
+  position: absolute;
+  left: -0.35rem;
+  top: 0.4rem;
+  width: 8px; height: 8px;
+  background: var(--orange);
+  border: 2px solid var(--black);
+}
+
+.road-item.done::before { background: var(--neon); box-shadow: 0 0 8px rgba(57,255,20,0.5); }
+.road-item.current::before { background: var(--orange); box-shadow: 0 0 12px rgba(255,106,0,0.6); animation: pulse 2s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,106,0,0.4); }
+  50% { box-shadow: 0 0 20px rgba(255,106,0,0.8); }
+}
+
+.road-phase {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.road-phase.done { color: var(--neon); }
+.road-phase.current { color: var(--orange); }
+.road-phase.next { color: rgba(176,176,160,0.4); }
+
+.road-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
+}
+
+.road-desc { font-size: 0.82rem; line-height: 1.6; color: var(--text); max-width: 500px; }
+
+/* ── INVERSORES ── */
+.inversores {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+}
+
+.inversores-inner { max-width: 1100px; margin: 0 auto; }
+
+.inv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 4rem;
+  align-items: start;
+}
+
+.inv-points { display: flex; flex-direction: column; gap: 1rem; }
+
+.inv-point {
+  display: flex;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  border-left: 2px solid rgba(255,106,0,0.3);
+  background: rgba(255,106,0,0.03);
+}
+
+.inv-point-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--orange);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.inv-point-text { font-size: 0.85rem; line-height: 1.6; }
+.inv-point-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+/* ── CONTACTO ── */
+#contacto {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact-form {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.form-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.5);
+}
+
+.form-input, .form-select, .form-textarea {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.8rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--orange);
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FF6A00' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+.form-select option { background: var(--card); }
+
+.form-textarea { resize: vertical; min-height: 120px; }
+
+.form-submit {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 1rem 2rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+
+.form-submit:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+
+.contact-alt {
+  margin-top: 2rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: rgba(176,176,160,0.4);
+  text-align: center;
+}
+
+.contact-alt a { color: var(--orange); text-decoration: none; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+.footer-brand span { color: var(--orange); }
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.4);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--orange); }
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgba(176,176,160,0.25);
+}
+
+/* ── STATUS BADGE ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid rgba(57,255,20,0.3);
+  color: var(--neon);
+  margin-top: 3rem;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--neon);
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 5rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .problema-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .metricas-header { grid-template-columns: 1fr; gap: 2rem; }
+  .inv-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+  .hero-metrics { gap: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">Porci<span>Data</span> MX</a>
+  <ul class="nav-links">
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#solucion">Solución</a></li>
+    <li><a href="#metricas">Métricas</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#inversores">Inversores</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Contacto</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-tag">Agrotecnología · Visión Artificial · Mexicali, BC</div>
+
+  <h1 class="hero-headline">
+    Inteligencia<br>
+    Artificial para<br>
+    la <span class="accent">Porcicultura</span>
+    <span class="mono">// pig-scan v1.0</span>
+  </h1>
+
+  <p class="hero-sub">
+    Pig-Scan automatiza el monitoreo de ganado porcino mediante visión artificial y aprendizaje profundo — eliminando el error humano, reduciendo costos operativos y convirtiendo cada granja en una operación de precisión basada en datos reales.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#solucion" class="btn-primary">Ver el producto</a>
+    <a href="#contacto" class="btn-secondary">Hablar con el founder</a>
+  </div>
+
+  <div class="hero-metrics">
+    <div class="metric">
+      <div class="metric-val">98<span>.8%</span></div>
+      <div class="metric-label">Precisión de detección</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">71<span>%</span></div>
+      <div class="metric-label">Precisión de postura</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">1<span>.17ms</span></div>
+      <div class="metric-label">Por frame analizado</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">300<span>ep</span></div>
+      <div class="metric-label">Épocas de entrenamiento</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROBLEMA -->
+<section class="problema" id="problema">
+  <div class="problema-grid">
+    <div class="reveal">
+      <div class="section-tag">El problema</div>
+      <h2 class="section-title">El campo opera<br>en el <span>siglo pasado</span></h2>
+      <p class="section-body">
+        En zonas con temperaturas extremas como Mexicali, el conteo manual de animales es ineficiente, peligroso para el personal e impreciso. Los productores toman decisiones críticas sin datos confiables.
+      </p>
+      <div class="problema-points">
+        <div class="problema-point">
+          <span class="pp-icon">🌡️</span>
+          <div>
+            <div class="pp-title">Condiciones extremas</div>
+            <div class="pp-text">Temperaturas de hasta 50°C hacen el monitoreo manual un riesgo real para el personal y los animales.</div>
+          </div>
+        </div>
+        <div class="problema-point">
+          <span class="pp-icon">📊</span>
+          <div>
+            <div class="pp-title">Cero datos en tiempo real</div>
+            <div class="pp-text">Sin sistemas automatizados, los productores no detectan problemas de salud, estrés calórico o pérdidas hasta que ya es demasiado tarde.</div>
+          </div>
+        </div>
+        <div class="problema-point">
+          <span class="pp-icon">💸</span>
+          <div>
+            <div class="pp-title">Soluciones existentes inaccesibles</div>
+            <div class="pp-text">Los sistemas actuales usan cámaras 3D costosas y hardware especializado fuera del alcance del productor promedio.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="transition-delay: 0.2s">
+      <div class="stats-block">
+        <div class="stat-cell">
+          <div class="stat-big">+19M</div>
+          <div class="stat-desc">Cabezas de ganado porcino en México</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-big">3°</div>
+          <div class="stat-desc">México, tercer productor de cerdo en América</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-big">&lt;5%</div>
+          <div class="stat-desc">Granjas con monitoreo tecnológico activo</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-big">0</div>
+          <div class="stat-desc">Soluciones accesibles para productor mediano</div>
+        </div>
+      </div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Proyecto en desarrollo activo
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOLUCIÓN -->
+<section id="solucion">
+  <div class="solucion reveal">
+    <div class="section-tag">La solución</div>
+    <h2 class="section-title">Pig-Scan —<br><span>visión artificial</span><br>para cualquier granja</h2>
+    <p class="section-body">
+      Un sistema de monitoreo continuo usando cámaras de seguridad estándar. Sin hardware costoso. Sin conexión a internet constante. Sin necesidad de recalibración entre granjas.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-num">01</div>
+        <span class="feature-icon">🐷</span>
+        <div class="feature-title">Detección y conteo automático</div>
+        <div class="feature-text">El sistema identifica y cuenta cada animal en tiempo real con 98.8% de precisión, incluso cuando se amontonan o se tapan entre sí.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">02</div>
+        <span class="feature-icon">🦴</span>
+        <div class="feature-title">Análisis biométrico — 19 keypoints</div>
+        <div class="feature-text">Mapeo completo del esqueleto digital mediante 19 puntos anatómicos articulares para estimación de peso y análisis de postura.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">03</div>
+        <span class="feature-icon">🚨</span>
+        <div class="feature-title">Monitoreo preventivo de salud</div>
+        <div class="feature-text">Detección temprana de cojeras, estrés calórico e inactividad. Alertas automáticas antes de que el problema se agrave.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">04</div>
+        <span class="feature-icon">🌡️</span>
+        <div class="feature-title">Termometría infrarroja</div>
+        <div class="feature-text">Control de temperatura corporal sin contacto físico, midiendo en la base de las orejas — el indicador más confiable de salud porcina.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">05</div>
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Edge Computing — sin internet</div>
+        <div class="feature-text">La IA procesa video localmente en microcontroladores económicos. Funciona en zonas rurales sin conexión estable, sincronizando cuando hay señal.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">06</div>
+        <span class="feature-icon">📱</span>
+        <div class="feature-title">Dashboard en tiempo real</div>
+        <div class="feature-text">Historial biométrico, alertas, registro de visitas a comederos y bebederos. Decisiones basadas en datos, no en intuición.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MÉTRICAS -->
+<section class="metricas" id="metricas">
+  <div class="metricas-inner">
+    <div class="metricas-header">
+      <div class="reveal">
+        <div class="section-tag">Métricas técnicas</div>
+        <h2 class="section-title">Resultados<br>reales del<br><span>modelo</span></h2>
+        <p class="section-body" style="margin-top: 1rem;">
+          Entrenado con YOLOv8-Pose sobre datos reales del ICA — UABC Mexicali. Los números hablan solos.
+        </p>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.2s">
+        <div class="progress-list">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Detección (Box mAP50)</span>
+              <span class="progress-val">98.8%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 98.8%"></div></div>
+            <div class="progress-sub">Capacidad de localizar y enmarcar cada animal</div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Postura (Pose mAP50)</span>
+              <span class="progress-val">71.0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 71%"></div></div>
+            <div class="progress-sub">Precisión al ubicar los 19 puntos del esqueleto</div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Velocidad de inferencia</span>
+              <span class="progress-val">1.17ms</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill neon" style="width: 95%"></div></div>
+            <div class="progress-sub">Por frame — compatible con microcontroladores económicos</div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Reducción de falsos positivos</span>
+              <span class="progress-val">100%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill neon" style="width: 100%"></div></div>
+            <div class="progress-sub">Post fine-tuning — umbral de confianza 60%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <table class="epoch-table">
+        <thead>
+          <tr>
+            <th>Época</th>
+            <th>Detección (Box mAP50)</th>
+            <th>Postura (Pose mAP50)</th>
+            <th>Error de Postura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>10</td><td>98.2%</td><td>21.2%</td><td>6.422</td></tr>
+          <tr><td>100</td><td>98.4%</td><td>62.0%</td><td>4.255</td></tr>
+          <tr><td>200</td><td>98.5%</td><td>69.6%</td><td>3.665</td></tr>
+          <tr><td>250</td><td>98.7%</td><td>70.0%</td><td>3.444</td></tr>
+          <tr><td class="val-good">300 ✓</td><td class="val-good">98.8%</td><td class="val-good">71.0%</td><td class="val-good">&lt;3.390</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="roadmap reveal">
+    <div class="section-tag">Roadmap</div>
+    <h2 class="section-title">De la tesis<br>al <span>mercado</span></h2>
+    <p class="section-body">Desarrollo transparente y documentado. Sin promesas vacías — solo avances reales verificables.</p>
+
+    <div class="road-items">
+      <div class="road-item done">
+        <div class="road-phase done">✓ Completado</div>
+        <div class="road-title">Modelo base entrenado — 300 épocas</div>
+        <div class="road-desc">YOLOv8-Pose entrenado con datos reales del ICA. Detección 98.8%, postura 71%. Fine-tuning aplicado para condiciones reales de granja.</div>
+      </div>
+      <div class="road-item done">
+        <div class="road-phase done">✓ Completado</div>
+        <div class="road-title">Validación en video real de granja</div>
+        <div class="road-desc">Pruebas con video 4K de instalaciones reales. Identificación individual de animales, eliminación de falsos positivos, detección en condiciones de amontonamiento.</div>
+      </div>
+      <div class="road-item current">
+        <div class="road-phase current">→ En curso</div>
+        <div class="road-title">Documentación técnica y búsqueda de financiamiento</div>
+        <div class="road-desc">Tesis académica en desarrollo. Aplicación a programas de apoyo agrotecnológico. Construcción de marca y validación pública del proyecto.</div>
+      </div>
+      <div class="road-item">
+        <div class="road-phase next">Próximo</div>
+        <div class="road-title">Piloto en granja real — ICA UABC</div>
+        <div class="road-desc">Instalación del sistema en las postas porcinas del ICA. Primera prueba en producción continua. Recopilación de datos para ajuste fino definitivo.</div>
+      </div>
+      <div class="road-item">
+        <div class="road-phase next">Futuro</div>
+        <div class="road-title">Módulo de estimación de peso y alertas</div>
+        <div class="road-desc">Integración de cálculo de biomasa, termometría infrarroja y sistema de alertas en tiempo real al dispositivo del productor.</div>
+      </div>
+      <div class="road-item">
+        <div class="road-phase next">Futuro</div>
+        <div class="road-title">Comercialización — PorciData MX</div>
+        <div class="road-desc">Lanzamiento de producto comercial bajo el umbrella de PorciData MX. Modelo de suscripción para granjas medianas en el norte de México.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- INVERSORES -->
+<section class="inversores" id="inversores">
+  <div class="inversores-inner">
+    <div class="reveal">
+      <div class="section-tag">Para inversores</div>
+      <h2 class="section-title">¿Por qué<br><span>PorciData MX?</span></h2>
+    </div>
+
+    <div class="inv-grid">
+      <div class="reveal">
+        <div class="inv-points">
+          <div class="inv-point">
+            <div class="inv-point-num">01</div>
+            <div>
+              <div class="inv-point-title">Mercado desatendido y enorme</div>
+              <div class="inv-point-text">México es el tercer productor de cerdo en América con más de 19 millones de cabezas. Menos del 5% tiene acceso a tecnología de monitoreo. La oportunidad es clara.</div>
+            </div>
+          </div>
+          <div class="inv-point">
+            <div class="inv-point-num">02</div>
+            <div>
+              <div class="inv-point-title">Tecnología funcional, no una idea</div>
+              <div class="inv-point-text">El modelo existe, está entrenado y ha sido validado en condiciones reales de granja. Las métricas de 98.8% de detección son verificables.</div>
+            </div>
+          </div>
+          <div class="inv-point">
+            <div class="inv-point-num">03</div>
+            <div>
+              <div class="inv-point-title">Hardware accesible — ventaja competitiva</div>
+              <div class="inv-point-text">Funciona con cámaras de seguridad estándar y microcontroladores económicos. Los competidores requieren hardware especializado 10x más caro.</div>
+            </div>
+          </div>
+          <div class="inv-point">
+            <div class="inv-point-num">04</div>
+            <div>
+              <div class="inv-point-title">Founder técnico con respaldo académico</div>
+              <div class="inv-point-text">Desarrollado en el Instituto de Ciencias Agrícolas de la UABC — acceso directo a instalaciones reales, datos exclusivos y red de productores del sector.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.2s">
+        <div style="background: var(--card); border: 1px solid var(--border); padding: 2.5rem;">
+          <div class="section-tag" style="margin-bottom: 1.5rem;">Etapa actual</div>
+          <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.5rem;">Pre-seed</div>
+          <div style="font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text); line-height: 1.8; margin-bottom: 2rem;">Buscando primer capital para piloto en granja real y desarrollo del módulo comercial.</div>
+
+          <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);">
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.68rem; color: rgba(176,176,160,0.5); text-transform: uppercase; letter-spacing: 0.1em;">Uso del capital</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Hardware piloto</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">40%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Desarrollo de módulos</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">35%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Registro de IP y legal</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">15%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Operación y validación</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">10%</span>
+            </div>
+          </div>
+
+          <a href="#contacto" class="btn-primary" style="width: 100%; text-align: center; display: block;">Quiero saber más</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="reveal" style="text-align: center;">
+    <div class="section-tag" style="justify-content: center;">Contacto</div>
+    <h2 class="section-title">¿Te interesa<br><span>Pig-Scan?</span></h2>
+    <p class="section-body" style="margin: 0 auto; text-align: center;">
+      Ya seas productor porcino, inversionista, colaborador o medio — aquí puedes contactar directamente al founder.
+    </p>
+  </div>
+
+  <form class="contact-form reveal" onsubmit="handleSubmit(event)">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Nombre</label>
+        <input type="text" class="form-input" placeholder="Tu nombre completo" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="tu@email.com" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Eres...</label>
+      <select class="form-select" required>
+        <option value="" disabled selected>Selecciona tu perfil</option>
+        <option value="inversor">Inversionista / Fondo</option>
+        <option value="productor">Productor porcino</option>
+        <option value="colaborador">Colaborador / Socio potencial</option>
+        <option value="medio">Medio de comunicación</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mensaje</label>
+      <textarea class="form-textarea" placeholder="Cuéntame qué te interesa del proyecto..." required></textarea>
+    </div>
+    <button type="submit" class="form-submit">Enviar mensaje →</button>
+  </form>
+
+  <div class="contact-alt">
+    ¿Prefieres directo? Escribe a <a href="mailto:porcidata.mx@gmail.com">porcidata.mx@gmail.com</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Porci<span>Data</span> MX</div>
+  <ul class="footer-links">
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#solucion">Solución</a></li>
+    <li><a href="#metricas">Métricas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 PorciData MX — Uzuel Ruiz</div>
+</footer>
+
+<script>
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Animate progress bars
+const bars = document.querySelectorAll('.progress-fill');
+const barObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.width = entry.target.style.width;
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+bars.forEach(bar => {
+  const target = bar.style.width;
+  bar.style.width = '0%';
+  setTimeout(() => barObserver.observe(bar), 100);
+  bar.addEventListener('transitionstart', () => {});
+  barObserver.observe(bar);
+});
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Mensaje enviado ✓';
+  btn.style.background = '#39FF14';
+  btn.style.color = '#0A0A08';
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensaje →';
+    btn.style.background = '';
+    btn.style.color = '';
+    e.target.reset();
+  }, 3000);
+}
+
+// Nav smooth
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
