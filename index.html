@@ -1239,37 +1239,45 @@ footer {
     </p>
   </div>
 
-  <form class="contact-form reveal" onsubmit="handleSubmit(event)">
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Nombre</label>
-        <input type="text" class="form-input" placeholder="Tu nombre completo" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="email" class="form-input" placeholder="tu@email.com" required>
-      </div>
+ <form class="contact-form reveal" action="https://formspree.io/f/xykbegjn" method="POST">
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Nombre</label>
+      <!-- Agregamos name="nombre" -->
+      <input type="text" name="nombre" class="form-input" placeholder="Tu nombre completo" required>
     </div>
     <div class="form-group">
-      <label class="form-label">Eres...</label>
-      <select class="form-select" required>
-        <option value="" disabled selected>Selecciona tu perfil</option>
-        <option value="inversor">Inversionista / Fondo</option>
-        <option value="productor">Productor porcino</option>
-        <option value="colaborador">Colaborador / Socio potencial</option>
-        <option value="medio">Medio de comunicación</option>
-        <option value="otro">Otro</option>
-      </select>
+      <label class="form-label">Email</label>
+      <!-- Agregamos name="email" -->
+      <input type="email" name="email" class="form-input" placeholder="tu@email.com" required>
     </div>
-    <div class="form-group">
-      <label class="form-label">Mensaje</label>
-      <textarea class="form-textarea" placeholder="Cuéntame qué te interesa del proyecto..." required></textarea>
-    </div>
-    <button type="submit" class="form-submit">Enviar mensaje →</button>
-  </form>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Eres...</label>
+    <!-- Agregamos name="perfil" -->
+    <select name="perfil" class="form-select" required>
+      <option value="" disabled selected>Selecciona tu perfil</option>
+      <option value="inversor">Inversionista / Fondo</option>
+      <option value="productor">Productor porcino</option>
+      <option value="colaborador">Colaborador / Socio potencial</option>
+      <option value="medio">Medio de comunicación</option>
+      <option value="otro">Otro</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Mensaje</label>
+    <!-- Agregamos name="mensaje" -->
+    <textarea name="mensaje" class="form-textarea" placeholder="Cuéntame qué te interesa del proyecto..." required></textarea>
+  </div>
+  
+  <!-- Cambiamos el texto del botón -->
+  <button type="submit" class="form-submit">ENVIAR MENSAJE</button>
+</form>
 
   <div class="contact-alt">
-    ¿Prefieres directo? Escribe a <a href="mailto:porcidata.mx@gmail.com">porcidata.mx@gmail.com</a>
+    ¿Prefieres directo? Escribe a <a href="mailto:porcidata.mx@gmail.com">porcidatamx@gmail.com</a>
   </div>
 </section>
 
