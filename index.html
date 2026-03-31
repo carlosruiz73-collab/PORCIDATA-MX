@@ -1,1309 +1,1354 @@
-modificalo 
-
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FUTUROS DEVS — PRODUCTION BIBLE</title>
+<title>PorciData MX — Inteligencia Artificial para la Porcicultura</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Teko:wght@300;500;700&display=swap');
+  /* --- PARCHE DE EMERGENCIA PORCIDATA MX --- */
+.hero-headline {
+  font-size: clamp(2rem, 5vw, 4rem) !important;
+  line-height: 1 !important;
+}
+.hero-sub {
+  font-size: 0.9rem !important;
+  max-width: 480px !important;
+}
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2.2rem !important;
+    line-height: 1.1 !important;
+  }
+  .hero, section {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
+/* ----------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
 
 :root {
-–neon: #39ff14;
-–purple: #8b00ff;
-–purple-light: #bf5fff;
-–black: #050508;
-–dark: #0d0d14;
-–card: #111118;
-–red: #ff2020;
-–yellow: #ffe600;
-–text: #c8c8d4;
+  --orange: #FF6A00;
+  --orange-light: #FF8C3A;
+  --orange-dim: rgba(255,106,0,0.12);
+  --black: #0A0A08;
+  --dark: #111110;
+  --card: #161614;
+  --border: rgba(255,106,0,0.15);
+  --text: #B8B8A8;
+  --white: #F0F0E8;
+  --neon: #39FF14;
+  --neon-dim: rgba(57,255,20,0.08);
 }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 body {
-background: var(–black);
-color: var(–text);
-font-family: ‘Space Mono’, monospace;
-overflow-x: hidden;
+  background: var(--black);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
 }
 
-/* –– NOISE OVERLAY –– */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 9999;
-opacity: 0.4;
+/* ── CURSOR ── */
+* { cursor: crosshair; }
+a, button { cursor: crosshair; }
+
+/* ── GRAIN ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
 }
 
-/* –– HEADER –– */
-header {
-position: relative;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-padding: 4rem 2rem;
-overflow: hidden;
-}
-
-header::before {
-content: ‘’;
-position: absolute;
-inset: 0;
-background:
-radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,0,255,0.15) 0%, transparent 70%),
-radial-gradient(ellipse 40% 40% at 20% 80%, rgba(57,255,20,0.08) 0%, transparent 60%),
-radial-gradient(ellipse 30% 30% at 80% 20%, rgba(255,32,32,0.06) 0%, transparent 60%);
-}
-
-.scanlines {
-position: absolute;
-inset: 0;
-background: repeating-linear-gradient(
-0deg,
-transparent,
-transparent 2px,
-rgba(0,0,0,0.15) 2px,
-rgba(0,0,0,0.15) 4px
-);
-pointer-events: none;
-}
-
-.header-tag {
-font-family: ‘Space Mono’, monospace;
-font-size: 0.7rem;
-letter-spacing: 0.3em;
-color: var(–neon);
-text-transform: uppercase;
-border: 1px solid rgba(57,255,20,0.3);
-padding: 0.4rem 1.2rem;
-margin-bottom: 2rem;
-animation: pulse-border 2s ease-in-out infinite;
-}
-
-@keyframes pulse-border {
-0%, 100% { border-color: rgba(57,255,20,0.3); }
-50% { border-color: rgba(57,255,20,0.8); box-shadow: 0 0 20px rgba(57,255,20,0.3); }
-}
-
-.main-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(5rem, 15vw, 14rem);
-line-height: 0.85;
-letter-spacing: -0.02em;
-position: relative;
-z-index: 1;
-}
-
-.title-futuros {
-display: block;
-color: white;
-text-shadow: 0 0 40px rgba(255,255,255,0.1);
-}
-
-.title-devs {
-display: block;
-color: var(–neon);
-text-shadow: 0 0 60px rgba(57,255,20,0.6), 0 0 120px rgba(57,255,20,0.3);
-animation: flicker 4s ease-in-out infinite;
-}
-
-@keyframes flicker {
-0%, 95%, 100% { opacity: 1; }
-96% { opacity: 0.8; }
-97% { opacity: 1; }
-98% { opacity: 0.6; }
-99% { opacity: 1; }
-}
-
-.slogan {
-font-family: ‘Teko’, sans-serif;
-font-size: clamp(1.5rem, 4vw, 3rem);
-font-weight: 700;
-letter-spacing: 0.5em;
-color: var(–red);
-margin-top: 1.5rem;
-text-transform: uppercase;
-text-shadow: 0 0 30px rgba(255,32,32,0.5);
-}
-
-.header-meta {
-margin-top: 3rem;
-display: flex;
-gap: 2rem;
-flex-wrap: wrap;
-justify-content: center;
-font-size: 0.7rem;
-letter-spacing: 0.2em;
-color: rgba(200,200,212,0.5);
-text-transform: uppercase;
-}
-
-.scroll-indicator {
-position: absolute;
-bottom: 2rem;
-left: 50%;
-transform: translateX(-50%);
-font-size: 0.65rem;
-letter-spacing: 0.3em;
-color: var(–purple-light);
-animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-0%, 100% { transform: translateX(-50%) translateY(0); }
-50% { transform: translateX(-50%) translateY(8px); }
-}
-
-/* –– NAV –– */
+/* ── NAV ── */
 nav {
-position: sticky;
-top: 0;
-z-index: 100;
-background: rgba(5,5,8,0.95);
-backdrop-filter: blur(20px);
-border-bottom: 1px solid rgba(139,0,255,0.3);
-padding: 0 2rem;
-display: flex;
-gap: 0;
-overflow-x: auto;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.2rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(10,10,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
 }
 
-nav a {
-font-family: ‘Space Mono’, monospace;
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: rgba(200,200,212,0.5);
-text-decoration: none;
-padding: 1rem 1.2rem;
-border-bottom: 2px solid transparent;
-white-space: nowrap;
-transition: all 0.2s;
+.nav-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: -0.02em;
 }
 
-nav a:hover, nav a.active {
-color: var(–neon);
-border-bottom-color: var(–neon);
+.nav-brand span { color: var(--orange); }
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
 }
 
-/* –– SECTIONS –– */
-section {
-max-width: 1100px;
-margin: 0 auto;
-padding: 6rem 2rem;
+.nav-links a {
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.6);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-.section-label {
-font-size: 0.65rem;
-letter-spacing: 0.4em;
-text-transform: uppercase;
-color: var(–purple-light);
-margin-bottom: 0.8rem;
+.nav-links a:hover { color: var(--orange); }
+
+.nav-cta {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--orange);
+  border: 1px solid var(--orange);
+  padding: 0.5rem 1.2rem;
+  text-decoration: none;
+  transition: all 0.2s;
 }
+
+.nav-cta:hover {
+  background: var(--orange);
+  color: var(--black);
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 3rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 50%, rgba(255,106,0,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(57,255,20,0.04) 0%, transparent 60%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,106,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,106,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+}
+
+.hero-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero-tag::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: var(--orange);
+}
+
+.hero-headline {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.hero-headline .accent { color: var(--orange); }
+.hero-headline .mono {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6em;
+  color: var(--neon);
+  display: block;
+  letter-spacing: 0.02em;
+  margin-top: 0.3em;
+}
+
+.hero-sub {
+  margin-top: 2rem;
+  max-width: 500px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.6s;
+}
+
+.hero-actions {
+  margin-top: 3rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+
+.btn-primary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(240,240,232,0.2);
+  padding: 0.9rem 2rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.hero-metrics {
+  margin-top: 5rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1s;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+}
+
+.metric-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.metric-val span { color: var(--orange); }
+.metric-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.5);
+  margin-top: 0.3rem;
+}
+
+/* ── SECTIONS GENERAL ── */
+section { padding: 7rem 3rem; }
+
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.section-tag::before { content: '//'; }
 
 .section-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(2.5rem, 6vw, 5rem);
-line-height: 1;
-color: white;
-margin-bottom: 3rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
 }
 
-.section-title span {
-color: var(–neon);
+.section-title span { color: var(--orange); }
+
+.section-body {
+  max-width: 560px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text);
 }
 
-/* –– DIVIDER –– */
-.divider {
-width: 100%;
-height: 1px;
-background: linear-gradient(90deg, transparent, var(–purple), transparent);
-margin: 0;
-opacity: 0.4;
+/* ── PROBLEMA ── */
+.problema {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-/* –– CARDS –– */
-.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-
-.card {
-background: var(–card);
-border: 1px solid rgba(139,0,255,0.2);
-padding: 2rem;
-position: relative;
-overflow: hidden;
-transition: border-color 0.3s, transform 0.3s;
+.problema-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-.card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: linear-gradient(90deg, var(–purple), var(–neon));
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.3s;
+.problema-points {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-.card:hover {
-border-color: rgba(139,0,255,0.5);
-transform: translateY(-3px);
+.problema-point {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  background: rgba(255,106,0,0.03);
+  transition: border-color 0.2s;
 }
 
-.card:hover::before { transform: scaleX(1); }
+.problema-point:hover { border-color: rgba(255,106,0,0.4); }
 
-.card-icon {
-font-size: 2.5rem;
-margin-bottom: 1rem;
-display: block;
+.pp-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
-.card-title {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.4rem;
-font-weight: 700;
-letter-spacing: 0.05em;
-color: white;
-margin-bottom: 0.5rem;
+.pp-text { font-size: 0.85rem; line-height: 1.6; }
+.pp-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
 }
 
-.card-sub {
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-color: var(–neon);
-text-transform: uppercase;
-margin-bottom: 0.8rem;
+.stats-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
 }
 
-.card p {
-font-size: 0.8rem;
-line-height: 1.7;
-color: var(–text);
+.stat-cell {
+  background: var(--card);
+  padding: 2rem;
+  text-align: center;
 }
 
-/* –– EPISODE FORMAT –– */
-.episode-strip {
-display: flex;
-gap: 0;
-margin-bottom: 3rem;
-border: 1px solid rgba(139,0,255,0.2);
-overflow: hidden;
+.stat-big {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 2.8rem;
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: -0.03em;
 }
 
-.ep-segment {
-flex: 1;
-padding: 1.5rem 1rem;
-text-align: center;
-border-right: 1px solid rgba(139,0,255,0.2);
-position: relative;
+.stat-desc {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.5);
+  margin-top: 0.5rem;
+  line-height: 1.5;
 }
 
-.ep-segment:last-child { border-right: none; }
+/* ── SOLUCIÓN ── */
+.solucion { max-width: 1100px; margin: 0 auto; }
 
-.ep-time {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 2rem;
-color: var(–neon);
-display: block;
-line-height: 1;
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 4rem;
 }
 
-.ep-unit {
-font-size: 0.6rem;
-letter-spacing: 0.2em;
-color: var(–purple-light);
-text-transform: uppercase;
-display: block;
-margin-bottom: 0.5rem;
+.feature {
+  background: var(--card);
+  padding: 2.5rem;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
 }
 
-.ep-label {
-font-family: ‘Teko’, sans-serif;
-font-size: 1rem;
-font-weight: 700;
-color: white;
-text-transform: uppercase;
-letter-spacing: 0.05em;
+.feature::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
 }
 
-.ep-desc {
-font-size: 0.7rem;
-color: var(–text);
-margin-top: 0.3rem;
-line-height: 1.4;
+.feature:hover { background: rgba(255,106,0,0.04); }
+.feature:hover::before { transform: scaleX(1); }
+
+.feature-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  color: rgba(255,106,0,0.4);
+  margin-bottom: 1rem;
 }
 
-.ep-0 { background: rgba(57,255,20,0.05); }
-.ep-1 { background: rgba(139,0,255,0.08); }
-.ep-2 { background: rgba(255,32,32,0.05); }
-.ep-3 { background: rgba(139,0,255,0.08); }
-.ep-4 { background: rgba(57,255,20,0.05); }
+.feature-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
 
-/* –– STACK TABLE –– */
-.stack-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 0.8rem;
+.feature-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.01em;
 }
 
-.stack-table th {
-font-family: ‘Teko’, sans-serif;
-font-size: 0.9rem;
-font-weight: 700;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-padding: 0.8rem 1rem;
-text-align: left;
-border-bottom: 1px solid rgba(139,0,255,0.4);
-color: var(–purple-light);
+.feature-text { font-size: 0.82rem; line-height: 1.7; color: var(--text); }
+
+/* ── MÉTRICAS TÉCNICAS ── */
+.metricas {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
-.stack-table td {
-padding: 1rem;
-border-bottom: 1px solid rgba(139,0,255,0.1);
-vertical-align: top;
-line-height: 1.6;
+.metricas-inner { max-width: 1100px; margin: 0 auto; }
+
+.metricas-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+  margin-bottom: 4rem;
 }
 
-.stack-table tr:hover td { background: rgba(139,0,255,0.05); }
+.progress-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 3rem; }
 
-.tool-name {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.1rem;
-font-weight: 700;
-color: white;
-display: block;
+.progress-item {}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+.progress-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.progress-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--orange);
+  font-size: 0.9rem;
+}
+.progress-bar {
+  height: 4px;
+  background: rgba(255,106,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--orange);
+  transition: width 1.5s ease;
+}
+.progress-fill.neon { background: var(--neon); }
+.progress-sub {
+  font-size: 0.68rem;
+  color: rgba(176,176,160,0.4);
+  margin-top: 0.3rem;
+  font-family: 'DM Mono', monospace;
 }
 
-.tool-cost {
-display: inline-block;
-font-size: 0.65rem;
-letter-spacing: 0.1em;
-padding: 0.15rem 0.5rem;
-border-radius: 2px;
-font-weight: 700;
-text-transform: uppercase;
+.epoch-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
 }
 
-.cost-free { background: rgba(57,255,20,0.15); color: var(–neon); }
-.cost-low { background: rgba(255,230,0,0.15); color: var(–yellow); }
-.cost-mid { background: rgba(255,32,32,0.15); color: var(–red); }
-
-.phase-badge {
-display: inline-block;
-font-size: 0.6rem;
-letter-spacing: 0.15em;
-padding: 0.2rem 0.6rem;
-border: 1px solid rgba(139,0,255,0.4);
-color: var(–purple-light);
-text-transform: uppercase;
-margin-bottom: 0.3rem;
+.epoch-table th {
+  text-align: left;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: rgba(176,176,160,0.5);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
 }
 
-/* –– CHARACTER CARDS –– */
-.char-card {
-background: var(–card);
-border: 1px solid rgba(139,0,255,0.2);
-overflow: hidden;
-transition: transform 0.3s, border-color 0.3s;
+.epoch-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid rgba(255,106,0,0.06);
+  color: var(--text);
 }
 
-.char-card:hover {
-transform: translateY(-4px);
-border-color: var(–neon);
+.epoch-table tr:last-child td { border-bottom: none; color: var(--white); font-weight: 500; }
+.epoch-table tr:last-child td:first-child { color: var(--orange); }
+
+.val-good { color: var(--neon) !important; }
+
+/* ── ROADMAP ── */
+.roadmap { max-width: 1100px; margin: 0 auto; }
+
+.road-items { margin-top: 4rem; position: relative; padding-left: 2rem; }
+
+.road-items::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--orange), rgba(255,106,0,0.1));
 }
 
-.char-header {
-padding: 2rem;
-background: linear-gradient(135deg, rgba(139,0,255,0.15), rgba(57,255,20,0.05));
-text-align: center;
-border-bottom: 1px solid rgba(139,0,255,0.2);
+.road-item {
+  position: relative;
+  margin-bottom: 3rem;
+  padding-left: 2rem;
 }
 
-.char-emoji { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
-
-.char-name {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.8rem;
-color: white;
-display: block;
+.road-item::before {
+  content: '';
+  position: absolute;
+  left: -0.35rem;
+  top: 0.4rem;
+  width: 8px; height: 8px;
+  background: var(--orange);
+  border: 2px solid var(--black);
 }
 
-.char-role {
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-color: var(–neon);
-text-transform: uppercase;
+.road-item.done::before { background: var(--neon); box-shadow: 0 0 8px rgba(57,255,20,0.5); }
+.road-item.current::before { background: var(--orange); box-shadow: 0 0 12px rgba(255,106,0,0.6); animation: pulse 2s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,106,0,0.4); }
+  50% { box-shadow: 0 0 20px rgba(255,106,0,0.8); }
 }
 
-.char-body { padding: 1.5rem; }
+.road-phase {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.road-phase.done { color: var(--neon); }
+.road-phase.current { color: var(--orange); }
+.road-phase.next { color: rgba(176,176,160,0.4); }
 
-.char-trait {
-display: flex;
-gap: 0.5rem;
-align-items: flex-start;
-margin-bottom: 0.6rem;
-font-size: 0.75rem;
-line-height: 1.5;
+.road-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
 }
 
-.char-trait::before {
-content: ‘▸’;
-color: var(–purple-light);
-flex-shrink: 0;
-margin-top: 0.05rem;
+.road-desc { font-size: 0.82rem; line-height: 1.6; color: var(--text); max-width: 500px; }
+
+/* ── INVERSORES ── */
+.inversores {
+  background: var(--dark);
+  border-top: 1px solid var(--border);
 }
 
-/* –– ARC TIMELINE –– */
-.arc-timeline {
-position: relative;
-padding-left: 3rem;
+.inversores-inner { max-width: 1100px; margin: 0 auto; }
+
+.inv-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 4rem;
+  align-items: start;
 }
 
-.arc-timeline::before {
-content: ‘’;
-position: absolute;
-left: 0.8rem;
-top: 0;
-bottom: 0;
-width: 2px;
-background: linear-gradient(180deg, var(–neon), var(–purple), var(–red));
+.inv-points { display: flex; flex-direction: column; gap: 1rem; }
+
+.inv-point {
+  display: flex;
+  gap: 1rem;
+  padding: 1.2rem 1.5rem;
+  border-left: 2px solid rgba(255,106,0,0.3);
+  background: rgba(255,106,0,0.03);
 }
 
-.arc-item {
-position: relative;
-margin-bottom: 2.5rem;
+.inv-point-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--orange);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
-.arc-item::before {
-content: ‘’;
-position: absolute;
-left: -2.45rem;
-top: 0.4rem;
-width: 10px;
-height: 10px;
-background: var(–neon);
-border: 2px solid var(–black);
-border-radius: 50%;
-box-shadow: 0 0 10px rgba(57,255,20,0.6);
+.inv-point-text { font-size: 0.85rem; line-height: 1.6; }
+.inv-point-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: var(--white);
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
 }
 
-.arc-season {
-font-size: 0.6rem;
-letter-spacing: 0.3em;
-color: var(–purple-light);
-text-transform: uppercase;
-margin-bottom: 0.3rem;
+/* ── CONTACTO ── */
+#contacto {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.arc-title {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.3rem;
-font-weight: 700;
-color: white;
-text-transform: uppercase;
-letter-spacing: 0.05em;
+.contact-form {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
 }
 
-.arc-desc {
-font-size: 0.8rem;
-line-height: 1.6;
-color: var(–text);
-margin-top: 0.3rem;
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.form-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.5);
 }
 
-/* –– MONETIZATION –– */
-.money-card {
-background: var(–card);
-border: 1px solid rgba(57,255,20,0.15);
-padding: 2rem;
-position: relative;
-overflow: hidden;
+.form-input, .form-select, .form-textarea {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.8rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
 }
 
-.money-card::after {
-content: attr(data-amount);
-position: absolute;
-bottom: -0.5rem;
-right: 1rem;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 4rem;
-color: rgba(57,255,20,0.06);
-pointer-events: none;
-line-height: 1;
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--orange);
 }
 
-.money-label {
-font-size: 0.6rem;
-letter-spacing: 0.3em;
-color: var(–neon);
-text-transform: uppercase;
-margin-bottom: 0.4rem;
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23FF6A00' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
 }
 
-.money-title {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.5rem;
-font-weight: 700;
-color: white;
-letter-spacing: 0.05em;
-margin-bottom: 0.8rem;
+.form-select option { background: var(--card); }
+
+.form-textarea { resize: vertical; min-height: 120px; }
+
+.form-submit {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 1rem 2rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  align-self: flex-start;
 }
 
-.money-card p {
-font-size: 0.8rem;
-line-height: 1.7;
-color: var(–text);
+.form-submit:hover {
+  background: var(--orange-light);
+  transform: translateY(-2px);
 }
 
-/* –– EPISODE CARDS –– */
-.ep-card {
-background: var(–card);
-border: 1px solid rgba(139,0,255,0.15);
-padding: 0;
-overflow: hidden;
-transition: transform 0.3s, border-color 0.3s;
+.contact-alt {
+  margin-top: 2rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  color: rgba(176,176,160,0.4);
+  text-align: center;
 }
 
-.ep-card:hover {
-transform: translateY(-4px);
-border-color: rgba(57,255,20,0.4);
-}
+.contact-alt a { color: var(--orange); text-decoration: none; }
 
-.ep-number {
-background: linear-gradient(135deg, rgba(139,0,255,0.2), rgba(57,255,20,0.1));
-padding: 1rem 1.5rem;
-display: flex;
-align-items: center;
-justify-content: space-between;
-border-bottom: 1px solid rgba(139,0,255,0.2);
-}
-
-.ep-num-text {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 2.5rem;
-line-height: 1;
-color: rgba(255,255,255,0.2);
-}
-
-.ep-num-title {
-font-family: ‘Teko’, sans-serif;
-font-weight: 700;
-font-size: 1rem;
-letter-spacing: 0.05em;
-color: var(–neon);
-text-transform: uppercase;
-text-align: right;
-}
-
-.ep-num-scene {
-font-size: 0.65rem;
-color: var(–text);
-text-align: right;
-}
-
-.ep-content { padding: 1.5rem; }
-
-.ep-content p {
-font-size: 0.78rem;
-line-height: 1.7;
-color: var(–text);
-margin-bottom: 1rem;
-}
-
-.ep-lesson {
-display: flex;
-align-items: center;
-gap: 0.5rem;
-font-size: 0.7rem;
-color: var(–purple-light);
-border-top: 1px solid rgba(139,0,255,0.2);
-padding-top: 1rem;
-}
-
-/* –– CALLOUT –– */
-.callout {
-background: rgba(57,255,20,0.04);
-border-left: 3px solid var(–neon);
-padding: 1.5rem 2rem;
-margin: 2rem 0;
-font-size: 0.85rem;
-line-height: 1.7;
-}
-
-.callout strong {
-color: var(–neon);
-font-family: ‘Teko’, sans-serif;
-font-size: 1rem;
-letter-spacing: 0.05em;
-display: block;
-margin-bottom: 0.3rem;
-}
-
-/* –– FOOTER –– */
+/* ── FOOTER ── */
 footer {
-background: var(–card);
-border-top: 1px solid rgba(139,0,255,0.3);
-padding: 4rem 2rem;
-text-align: center;
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.footer-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 3rem;
-color: var(–neon);
-text-shadow: 0 0 40px rgba(57,255,20,0.4);
-letter-spacing: 0.05em;
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+.footer-brand span { color: var(--orange); }
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
 }
 
-.footer-sub {
-font-size: 0.7rem;
-letter-spacing: 0.3em;
-color: rgba(200,200,212,0.4);
-margin-top: 0.5rem;
-text-transform: uppercase;
+.footer-links a {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(176,176,160,0.4);
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-/* –– RESPONSIVE –– */
+.footer-links a:hover { color: var(--orange); }
+
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgba(176,176,160,0.25);
+}
+
+/* ── STATUS BADGE ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid rgba(57,255,20,0.3);
+  color: var(--neon);
+  margin-top: 3rem;
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  background: var(--neon);
+  border-radius: 50%;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── DIVIDER ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-.episode-strip { flex-direction: column; }
-.ep-segment { border-right: none; border-bottom: 1px solid rgba(139,0,255,0.2); }
-nav a { font-size: 0.6rem; padding: 0.8rem 0.8rem; }
-}
-
-/* –– ANIMATIONS –– */
-.fade-in {
-opacity: 0;
-transform: translateY(20px);
-transition: opacity 0.6s, transform 0.6s;
-}
-
-.fade-in.visible {
-opacity: 1;
-transform: translateY(0);
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  section { padding: 5rem 1.5rem; }
+  .hero { padding: 7rem 1.5rem 4rem; }
+  .problema-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .metricas-header { grid-template-columns: 1fr; gap: 2rem; }
+  .inv-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+  .hero-metrics { gap: 2rem; }
 }
 </style>
-
 </head>
 <body>
 
-<!-- HEADER -->
-
-<header>
-  <div class="scanlines"></div>
-  <div class="header-tag">Production Bible v1.0 — Confidencial</div>
-  <h1 class="main-title">
-    <span class="title-futuros">FUTUROS</span>
-    <span class="title-devs">DEVS</span>
-  </h1>
-  <div class="slogan">CODE OR DIE 💀</div>
-  <div class="header-meta">
-    <span>@charliee.dev1 · TikTok</span>
-    <span>@la.rata.dev · Instagram</span>
-    <span>Serie Animada — Temporada 1</span>
-    <span>60s–2min por episodio</span>
-  </div>
-  <div class="scroll-indicator">▼ SCROLL ▼</div>
-</header>
-
+<!-- NAV -->
 <nav>
-  <a href="#formato">Formato</a>
-  <a href="#stack">Stack</a>
-  <a href="#personajes">Personajes</a>
-  <a href="#arco">Arco Narrativo</a>
-  <a href="#episodios">Episodios</a>
-  <a href="#distribucion">Distribución</a>
-  <a href="#monetizacion">Monetización</a>
+  <a href="#" class="nav-brand">Porci<span>Data</span> MX</a>
+  <ul class="nav-links">
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#solucion">Solución</a></li>
+    <li><a href="#metricas">Métricas</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#inversores">Inversores</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Contacto</a>
 </nav>
 
-<!-- FORMATO -->
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
 
-<section id="formato">
-  <div class="section-label">01 — Anatomía del Episodio</div>
-  <h2 class="section-title">EL <span>FORMATO</span></h2>
+  <div class="hero-tag">tecnología Agrícola· Visión Artificial · Mexicali, BC</div>
 
-  <div class="episode-strip">
-    <div class="ep-segment ep-0">
-      <span class="ep-time">0:00</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">COLD OPEN</div>
-      <div class="ep-desc">La rata ya en medio de la catástrofe. Sin contexto. Sin explicación.</div>
-    </div>
-    <div class="ep-segment ep-1">
-      <span class="ep-time">0:05</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">HOOK VISUAL</div>
-      <div class="ep-desc">Algo explota, falla o sale mal. La rata reacciona.</div>
-    </div>
-    <div class="ep-segment ep-2">
-      <span class="ep-time">0:15</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">PROBLEMA = CONCEPTO</div>
-      <div class="ep-desc">El problema de programación SE CONVIERTE en la catástrofe visual.</div>
-    </div>
-    <div class="ep-segment ep-3">
-      <span class="ep-time">0:45</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">SOLUCIÓN CAÓTICA</div>
-      <div class="ep-desc">La rata resuelve el problema de la manera más destructiva posible.</div>
-    </div>
-    <div class="ep-segment ep-4">
-      <span class="ep-time">1:50</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">PUNCHLINE + CTA</div>
-      <div class="ep-desc">Una frase memorable. "Sígueme antes de que esto explote también."</div>
-    </div>
+  <h1 class="hero-headline">
+    Automatización<br>
+    Artificial para<br>
+    la <span class="accent">Porcicultura</span>
+    <span class="mono">// pig-scan v1.0</span>
+  </h1>
+
+  <p class="hero-sub">
+    Pig-Scan vuelve automático el monitoreo de ganado porcino mediante visión artificial y aprendizaje profundo — elimina el error humano, reduce costos operativos y convierte cada granja en una operación de precisión basada en datos reales.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#solucion" class="btn-primary">Ver el producto</a>
+    <a href="#contacto" class="btn-secondary">Hablar con el fundador</a>
   </div>
 
-  <div class="callout">
-    <strong>REGLA DE ORO</strong>
-    El concepto de programación NO se explica — se VIVE. Si el episodio es sobre loops infinitos, la rata literalmente no puede salir de un cuarto que se repite. Si es sobre null pointers, algo desaparece inexplicablemente. La metáfora ES la historia.
-  </div>
-
-  <div class="grid-3">
-    <div class="card">
-      <span class="card-icon">🔥</span>
-      <div class="card-title">Estética Visual</div>
-      <p>Rat Fink / Ed Roth duro. Ojos saltados, proporciones imposibles, colores que duelen. Verde neón, morado, negro profundo. Todo se está destruyendo siempre.</p>
+  <div class="hero-metrics">
+    <div class="metric">
+      <div class="metric-val">98<span>.8%</span></div>
+      <div class="metric-label">Precisión de detección</div>
     </div>
-    <div class="card">
-      <span class="card-icon">🎙️</span>
-      <div class="card-title">Estilo Narrativo</div>
-      <p>Voz en primera persona de la rata. Rápido, irreverente, como si te estuviera hablando directo y no tuviera tiempo. Nunca suena a tutorial.</p>
+    <div class="metric">
+      <div class="metric-val">71<span>%</span></div>
+      <div class="metric-label">Precisión de postura</div>
     </div>
-    <div class="card">
-      <span class="card-icon">💥</span>
-      <div class="card-title">Regla de Ritmo</div>
-      <p>Corte de edición cada 1.5–3 segundos máximo. Si hay más de 4 segundos sin cambio visual, ya perdiste a tu audiencia de TikTok.</p>
+    <div class="metric">
+      <div class="metric-val">1<span>.17ms</span></div>
+      <div class="metric-label">Por frame analizado</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">300<span>ep</span></div>
+      <div class="metric-label">Épocas de entrenamiento</div>
     </div>
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- STACK DE PRODUCCIÓN -->
-
-<section id="stack">
-  <div class="section-label">02 — Pipeline Sin Presupuesto</div>
-  <h2 class="section-title">EL <span>STACK</span></h2>
-
-  <table class="stack-table">
-    <thead>
-      <tr>
-        <th>Fase</th>
-        <th>Herramienta</th>
-        <th>Para qué</th>
-        <th>Costo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="phase-badge">Ilustración</span></td>
-        <td>
-          <span class="tool-name">Gemini AI</span>
-          Prompts estilo Rat Fink/Ed Roth
-        </td>
-        <td>Escenas base, poses de la rata, props, fondos. Ya tienes el workflow. Genera 10–15 poses emocionales clave ("sprite sheet").</td>
-        <td><span class="tool-cost cost-free">Gratis</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Animación</span></td>
-        <td>
-          <span class="tool-name">Kling AI</span>
-          Image-to-video
-        </td>
-        <td>Toma tus ilustraciones estáticas y les da 5–8 segundos de movimiento creíble. Funciona perfecto con estética caricaturesca.</td>
-        <td><span class="tool-cost cost-low">~$10/mes</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Animación</span></td>
-        <td>
-          <span class="tool-name">Pika Labs</span>
-          Loop animation
-        </td>
-        <td>Loops perfectos para efectos: explosiones en loop, código cayendo, ojos de la rata vibrando. Ideal para elementos de fondo.</td>
-        <td><span class="tool-cost cost-free">Gratis (límite)</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Profundidad</span></td>
-        <td>
-          <span class="tool-name">LeiaPix</span>
-          2.5D Parallax
-        </td>
-        <td>Convierte ilustraciones 2D en escenas con profundidad cinematográfica. La cámara se mueve, los planos se separan. Muy impresionante.</td>
-        <td><span class="tool-cost cost-free">Gratis</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Voz</span></td>
-        <td>
-          <span class="tool-name">ElevenLabs</span>
-          Voice cloning
-        </td>
-        <td>Crea la voz oficial de la rata. O clona tu propia voz para que siempre suene consistente. Ronca, rápida, al borde del caos.</td>
-        <td><span class="tool-cost cost-low">~$5/mes</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Música</span></td>
-        <td>
-          <span class="tool-name">Suno AI</span>
-          Music generation
-        </td>
-        <td>Genera tracks punk/glitch/drum and bass únicos por episodio. Prompt: "chaotic lo-fi punk glitch 140bpm rat fink energy".</td>
-        <td><span class="tool-cost cost-free">Gratis (límite)</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Edición</span></td>
-        <td>
-          <span class="tool-name">CapCut</span>
-          Montaje final
-        </td>
-        <td>Monta todo como un TikTok agresivo. Cortes duros, zoom-ins, subtítulos kinéticos. El workflow que ya conoces.</td>
-        <td><span class="tool-cost cost-free">Gratis</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Extras</span></td>
-        <td>
-          <span class="tool-name">Runway ML</span>
-          Gen-3 Alpha
-        </td>
-        <td>Para tomas especiales donde necesitas más control. El alien, el espacio, efectos de código que caen en 3D.</td>
-        <td><span class="tool-cost cost-mid">~$15/mes</span></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="callout" style="margin-top: 2rem;">
-    <strong>COSTO TOTAL ESTIMADO: $15–$30/mes</strong>
-    Con Kling AI + ElevenLabs + Suno Premium ya tienes todo lo que necesitas para producir 4 episodios por mes. Runway es opcional para escenas premium. El ROI con un solo patrocinio cubre 6 meses de stack.
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PERSONAJES -->
-
-<section id="personajes">
-  <div class="section-label">03 — Universo de Personajes</div>
-  <h2 class="section-title"><span>PERSONAJES</span></h2>
-
-  <div class="grid-3">
-    <div class="char-card">
-      <div class="char-header">
-        <span class="char-emoji">🐀</span>
-        <span class="char-name">LA RATA</span>
-        <span class="char-role">Protagonista · @la.rata.dev</span>
-      </div>
-      <div class="char-body">
-        <div class="char-trait">Ya sabe programar, pero siempre de la manera más caótica posible. No es beginner — es experto que enseña como si estuviera al borde del colapso.</div>
-        <div class="char-trait">Vive en presente permanente. No planea. Cada episodio es la primera vez que le pasa algo así aunque le haya pasado 40 veces.</div>
-        <div class="char-trait">Cuarta pared destruida: te habla directo. Sabe que eres humano mirando una pantalla.</div>
-        <div class="char-trait">Filosofía: el código perfecto no existe. Solo existe el código que funciona AHORA antes de que todo explote.</div>
-      </div>
-    </div>
-
-```
-<div class="char-card">
-  <div class="char-header">
-    <span class="char-emoji">👽</span>
-    <span class="char-name">EL ALIEN</span>
-    <span class="char-role">Sidekick · "Zyx-9"</span>
-  </div>
-  <div class="char-body">
-    <div class="char-trait">Vino a la Tierra específicamente para aprender a programar. En su planeta saben matemáticas perfectas pero nunca han visto un bug.</div>
-    <div class="char-trait">Cada bug lo deja en shock existencial. "¿Por qué el undefined no es un error... hasta que sí lo es?"</div>
-    <div class="char-trait">Función narrativa: es el que hace las preguntas básicas que el espectador tiene pero no quiere decir.</div>
-    <div class="char-trait">Relación con la Rata: el único que genuinamente la admira aunque todo explote siempre.</div>
-  </div>
-</div>
-
-<div class="char-card">
-  <div class="char-header">
-    <span class="char-emoji">🦠</span>
-    <span class="char-name">BUG</span>
-    <span class="char-role">Villano · El Bug Boss</span>
-  </div>
-  <div class="char-body">
-    <div class="char-trait">No es un bug específico — es LA entidad del caos en el código. Aparece cuando la rata está cerca de terminar algo.</div>
-    <div class="char-trait">Diseño visual: mutante, blob con tentáculos de código corrupto, ojos que son símbolos de error (null, undefined, NaN).</div>
-    <div class="char-trait">No es malvado — es caótico neutral. Solo existe porque el código existe.</div>
-    <div class="char-trait">Cada temporada evoluciona: empieza como bug de sintaxis, escala a error de lógica, llega a problema de arquitectura.</div>
-  </div>
-</div>
-```
-
-  </div>
-
-  <div style="margin-top: 1.5rem;" class="grid-2">
-    <div class="card">
-      <span class="card-icon">🤖</span>
-      <div class="card-title">La IA del Cuarto</div>
-      <div class="card-sub">Personaje recurrente</div>
-      <p>Una IA atrapada en el setup de la rata. Da consejos técnicamente correctos pero completamente inútiles en el contexto del caos. Voz monótona. Siempre dice "Según la documentación oficial..."</p>
-    </div>
-    <div class="card">
-      <span class="card-icon">💀</span>
-      <div class="card-title">El Fantasma del Código Legacy</div>
-      <div class="card-sub">Aparición ocasional</div>
-      <p>El espíritu de un dev que escribió código terrible en los 90s y ahora está condenado a aparecer cuando alguien usa esas mismas malas prácticas. Trae sabiduría oscura.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ARCO NARRATIVO -->
-
-<section id="arco">
-  <div class="section-label">04 — Estructura de la Serie</div>
-  <h2 class="section-title">ARCO <span>NARRATIVO</span></h2>
-
-  <div class="grid-2">
-    <div>
-      <div class="arc-timeline">
-        <div class="arc-item">
-          <div class="arc-season">Temporada 1 — 12 episodios</div>
-          <div class="arc-title">🐀 El Origen del Caos</div>
-          <div class="arc-desc">La rata está atrapada en su cuarto. Cada episodio introduce un concepto de programación web (variables, funciones, loops, etc.) mientras el setup literalmente se destruye. Al final de la temporada: el cuarto explota completamente.</div>
+<!-- PROBLEMA -->
+<section class="problema" id="problema">
+  <div class="problema-grid">
+    <div class="reveal">
+      <div class="section-tag">El problema</div>
+      <h2 class="section-title">El campo opera<br>En mayor parte <span>De forma manual</span></h2>
+      <p class="section-body">
+        En zonas con temperaturas extremas como Mexicali, el conteo manual de animales es ineficiente, peligroso para el personal e impreciso. Los productores toman decisiones críticas sin datos confiables.
+      </p>
+      <div class="problema-points">
+        <div class="problema-point">
+          <span class="pp-icon">🌡️</span>
+          <div>
+            <div class="pp-title">Condiciones extremas</div>
+            <div class="pp-text">Temperaturas de hasta 50°C hacen el monitoreo manual un riesgo real para el personal y los animales.</div>
+          </div>
         </div>
-        <div class="arc-item">
-          <div class="arc-season">Temporada 2 — 12 episodios</div>
-          <div class="arc-title">🚗 En Fuga (Conceptos Intermedios)</div>
-          <div class="arc-desc">La rata huye del cuarto destruido en su carro caótico. Aprende mientras escapa: APIs, fetch, async/await, frameworks. El Bug Boss la persigue. El Alien la acompaña.</div>
+        <div class="problema-point">
+          <span class="pp-icon">📊</span>
+          <div>
+            <div class="pp-title">No hay datos en tiempo real</div>
+            <div class="pp-text">Sin sistemas automatizados, los productores no detectan problemas de salud, estrés calórico o pérdidas hasta que ya es demasiado tarde.</div>
+          </div>
         </div>
-        <div class="arc-item">
-          <div class="arc-season">Temporada 3 — 12 episodios</div>
-          <div class="arc-title">🚀 El Espacio (Avanzado)</div>
-          <div class="arc-desc">La nave alienígena. Backend, bases de datos, DevOps, deployment. La rata tiene que mantener los sistemas de la nave funcionando mientras navegan hacia "El Servidor Final" donde vive el Bug Boss definitivo.</div>
-        </div>
-        <div class="arc-item">
-          <div class="arc-season">Temporada 4+</div>
-          <div class="arc-title">🌍 El Multiverso del Código</div>
-          <div class="arc-desc">Japón neón, ciudades distópicas, dimensiones paralelas. La rata es ya una leyenda. Empieza a encontrar otros devs caóticos alrededor del mundo. Expansión del universo.</div>
+        <div class="problema-point">
+          <span class="pp-icon">💸</span>
+          <div>
+            <div class="pp-title">Soluciones actuales inaccesibles</div>
+            <div class="pp-text">Los sistemas actuales de detección usan cámaras 3D costosas y hardware especializado que el productor mediano y pequeño no puede costear.</div>
+          </div>
         </div>
       </div>
     </div>
 
-```
-<div>
-  <div class="callout">
-    <strong>DECISIÓN CLAVE DE NARRATIVA</strong>
-    La rata NO aprende de cero. Ya sabe programar. Esto la diferencia de todos los canales educativos. Ella enseña — pero desde el caos, no desde el dominio. La lección siempre viene DESPUÉS de que algo sale terriblemente mal.
-  </div>
-
-  <div style="margin-top: 1.5rem;" class="card">
-    <div class="card-title">Continuidad Ligera</div>
-    <p style="font-size: 0.8rem; line-height: 1.7;">Cada episodio funciona SOLO — no necesitas ver los anteriores. Pero hay elementos continuos: el setup del cuarto se destruye gradualmente, el Bug Boss evoluciona, el Alien aprende. Los fans que ven todo ven una historia. Los nuevos pueden entrar en cualquier punto.</p>
-  </div>
-
-  <div style="margin-top: 1rem;" class="card">
-    <div class="card-title">El Meta-Arco</div>
-    <p style="font-size: 0.8rem; line-height: 1.7;">La pregunta que nunca se responde directamente: ¿la rata programa para vivir o vive para programar? El CODE OR DIE no es un slogan — es la condición de existencia de este personaje. Cada episodio es evidencia de eso.</p>
-  </div>
-</div>
-```
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- EPISODIOS PILOTO -->
-
-<section id="episodios">
-  <div class="section-label">05 — Temporada 1</div>
-  <h2 class="section-title">EPISODIOS <span>PILOTO</span></h2>
-
-  <div class="grid-2">
-    <div class="ep-card">
-      <div class="ep-number">
-        <div class="ep-num-text">01</div>
-        <div>
-          <div class="ep-num-title">NULL POINTER</div>
-          <div class="ep-num-scene">📍 El Cuarto</div>
+    <div class="reveal" style="transition-delay: 0.2s">
+      <div class="stats-block">
+        <div class="stat-cell">
+          <div class="stat-big">+19M</div>
+          <div class="stat-desc">Cabezas de ganado porcino en México</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-big">3°</div>
+          <div class="stat-desc">México, es el tercer productor de cerdo en América</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-big">&lt;5%</div>
+          <div class="stat-desc"> De las granjas porcinas cuentan con un monitoreo tecnológico activo</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-big">0</div>
+          <div class="stat-desc">Soluciones accesibles para pequeños y medianos productores</div>
         </div>
       </div>
-      <div class="ep-content">
-        <p>La rata busca su café. No está. Busca el cargador. No está. Busca al Alien. No está. Todo existe pero devuelve null. La rata entra en crisis existencial hasta que conecta: esto es exactamente lo que pasa cuando llamas a algo que no fue inicializado. Resuelve el problema del café (lo había dejado floating en una variable sin asignar) y el cuarto explota de todas formas.</p>
-        <div class="ep-lesson">🧠 Concepto: Variables, null vs undefined, inicialización</div>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Proyecto en desarrollo activo
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SOLUCIÓN -->
+<section id="solucion">
+  <div class="solucion reveal">
+    <div class="section-tag">La solución</div>
+    <h2 class="section-title">Pig-Scan —<br><span>visión artificial</span><br>para cualquier granja</h2>
+    <p class="section-body">
+      Un sistema de monitoreo las 24 oras no invasivo usando cámaras de seguridad estándar. Sin hardware costoso. Sin conexión a internet constante. Sin necesidad de recalibración entrecada  granjas.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-num">01</div>
+        <span class="feature-icon">🐷</span>
+        <div class="feature-title">Detección y conteo automático</div>
+        <div class="feature-text">El sistema identifica a cada animal en tiempo real con 98.8% de precisión, incluso cuando se amontonan o se tapan entre sí.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">02</div>
+        <span class="feature-icon">🦴</span>
+        <div class="feature-title">Análisis biométrico — 19 keypoints</div>
+        <div class="feature-text">Se cuenta con un mapeo completo del esqueleto digital mediante 19 puntos clave en el esqueleto del animal para estimación de peso y el análisis de postura.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">03</div>
+        <span class="feature-icon">🚨</span>
+        <div class="feature-title">Monitoreo preventivo de salud</div>
+        <div class="feature-text">Detección temprana de cojeras, estrés calórico e inactividad. Alertas automáticas antes de que el problema se vuelva grave.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">04</div>
+        <span class="feature-icon">🌡️</span>
+        <div class="feature-title">Termometría infrarroja</div>
+        <div class="feature-text">Control de temperatura corporal sin contacto físico, midiendo en la base de las orejas — el indicador más confiable de salud porcina.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">05</div>
+        <span class="feature-icon">⚡</span>
+        <div class="feature-title">Edge Computing — sin internet</div>
+        <div class="feature-text">El programa procesa video localmente en microcontroladores económicos. Funcionando en zonas rurales sin conexión estable, sincronizando cuando hay señal.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-num">06</div>
+        <span class="feature-icon">📱</span>
+        <div class="feature-title">Cuadro de gestion en tiempo real</div>
+        <div class="feature-text">Historial biométrico individual por animal, alertas, registro de visitas a comederos y bebederos. Así se toman decisiones basadas en datos, no en intuición.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MÉTRICAS -->
+<section class="metricas" id="metricas">
+  <div class="metricas-inner">
+    <div class="metricas-header">
+      <div class="reveal">
+        <div class="section-tag">Métricas técnicas</div>
+        <h2 class="section-title">Resultados<br>reales del<br><span>modelo</span></h2>
+        <p class="section-body" style="margin-top: 1rem;">
+          Entrenado con YOLOv8-Pose sobre datos reales del ICA — UABC Mexicali y mas zonas, distintos estilos de nave, granjas y razas. Aqui los numeros.
+        </p>
+      </div>
+
+      <div class="reveal" style="transition-delay: 0.2s">
+        <div class="progress-list">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Detección (Box mAP50)</span>
+              <span class="progress-val">98.8%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 98.8%"></div></div>
+            <div class="progress-sub">Capacidad de localizar y encasillar cada animal</div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Postura (Pose mAP50)</span>
+              <span class="progress-val">71.0%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 71%"></div></div>
+            <div class="progress-sub">Precisión al ubicar los 19 puntos clave del esqueleto </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Velocidad de inferencia</span>
+              <span class="progress-val">1.17ms</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill neon" style="width: 95%"></div></div>
+            <div class="progress-sub">Por frame — compatible con microcontroladores económicos</div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-name">Reducción de falsos positivos</span>
+              <span class="progress-val">100%</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill neon" style="width: 100%"></div></div>
+            <div class="progress-sub">Post fine-tuning — umbral de confianza 60%</div>
+          </div>
+        </div>
       </div>
     </div>
 
-```
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">02</div>
-    <div>
-      <div class="ep-num-title">INFINITE LOOP</div>
-      <div class="ep-num-scene">📍 El Cuarto (mismo de siempre)</div>
+    <div class="reveal">
+      <table class="epoch-table">
+        <thead>
+          <tr>
+            <th>Época</th>
+            <th>Detección (Box mAP50)</th>
+            <th>Postura (Pose mAP50)</th>
+            <th>Error de Postura</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>10</td><td>98.2%</td><td>21.2%</td><td>6.422</td></tr>
+          <tr><td>100</td><td>98.4%</td><td>62.0%</td><td>4.255</td></tr>
+          <tr><td>200</td><td>98.5%</td><td>69.6%</td><td>3.665</td></tr>
+          <tr><td>250</td><td>98.7%</td><td>70.0%</td><td>3.444</td></tr>
+          <tr><td class="val-good">300 ✓</td><td class="val-good">98.8%</td><td class="val-good">71.0%</td><td class="val-good">&lt;3.390</td></tr>
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata se despierta, hace café, se sienta, el setup explota, la rata se despierta... El episodio literalmente se repite 3 veces con variaciones sutiles antes de que la rata se dé cuenta. El Alien está ahí desde el inicio pero no puede romper el loop — solo puede agregar un break condition. Termina con el cuarto destruido de una manera diferente cada vez.</p>
-    <div class="ep-lesson">🧠 Concepto: Loops, condiciones de parada, recursión accidental</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">03</div>
-    <div>
-      <div class="ep-num-title">MERGE CONFLICT</div>
-      <div class="ep-num-scene">📍 El Cuarto + Nave Alien</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata y el Alien intentan trabajar en el mismo proyecto simultáneamente. Objetos del cuarto empiezan a existir en dos versiones al mismo tiempo: hay DOS ratas, DOS teclados, DOS cafés — pero incompatibles. La rata tiene que hacer un merge manual de la realidad. Una de las versiones gana. La otra explota.</p>
-    <div class="ep-lesson">🧠 Concepto: Git, merge conflicts, versioning, branching</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">04</div>
-    <div>
-      <div class="ep-num-title">ASYNC / AWAIT</div>
-      <div class="ep-num-scene">📍 La Ciudad Neón</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata encarga pizza. Pizza llega antes que el hambre. El carro arranca antes de poner la llave. Todo pasa en el orden equivocado. La rata tiene que aprender a esperar — lo cual es literalmente la cosa más difícil para este personaje. El Alien explica promises mientras el carro se incendia.</p>
-    <div class="ep-lesson">🧠 Concepto: Async/await, promises, callbacks, event loop</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">05</div>
-    <div>
-      <div class="ep-num-title">BUG BOSS</div>
-      <div class="ep-num-scene">📍 El Cuarto Destruido</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>Primera aparición del Bug Boss. La rata lleva 3 horas debuggeando algo que "debería funcionar" y no puede encontrar el error. El Bug Boss materializa desde el código: no hay errores de sintaxis, no hay errores de lógica — es un error de LÓGICA DE NEGOCIO. La rata tiene que entender qué quería hacer antes de poder arreglarlo.</p>
-    <div class="ep-lesson">🧠 Concepto: Types of bugs, debugging methodologies, rubber duck debugging</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">06</div>
-    <div>
-      <div class="ep-num-title">LA PLAYA DE PROD</div>
-      <div class="ep-num-scene">📍 La Playa</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata deployó algo "en vacaciones" porque "era un cambio pequeño". Está en la playa con el Alien cuando todo empieza a explotar en producción. Tiene que hacer hotfix desde el celular, con WiFi de 2 barras, con el sol reflejándose en la pantalla. El oceáno literalmente se tiñe de rojo. Deploy desde la playa.</p>
-    <div class="ep-lesson">🧠 Concepto: Deployment, environments, hotfixes, "never deploy on Friday"</div>
-  </div>
-</div>
-```
-
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- DISTRIBUCIÓN -->
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="roadmap reveal">
+    <div class="section-tag">Roadmap</div>
+    <h2 class="section-title">De la tesis<br>al <span>mercado</span></h2>
+    <p class="section-body">Desarrollo transparente y documentado. — solo avances reales verificables.</p>
 
-<section id="distribucion">
-  <div class="section-label">06 — Estrategia de Plataformas</div>
-  <h2 class="section-title">DISTRIBUCIÓN <span>Y GROWTH</span></h2>
-
-  <div class="grid-2">
-    <div class="card">
-      <span class="card-icon">📱</span>
-      <div class="card-title">TikTok — @charliee.dev1</div>
-      <div class="card-sub">Canal Principal · Episodios completos</div>
-      <p>Episodios completos de 60s–2min. Formato vertical nativo. El algoritmo de TikTok favorece contenido educativo con buena retención — y tu formato de cortes rápidos está hecho para eso. Publica martes y jueves a las 7pm–9pm hora local para máximo alcance.</p>
+    <div class="road-items">
+      <div class="road-item done">
+        <div class="road-phase done">✓ Completado</div>
+        <div class="road-title">Modelo base entrenado — 300 épocas</div>
+        <div class="road-desc">YOLOv8-Pose entrenado con datos reales de granjas porcinas. Detección 98.8%, postura 71%. Fine-tuning aplicado para condiciones reales de granja.</div>
+      </div>
+      <div class="road-item done">
+        <div class="road-phase done">✓ Completado</div>
+        <div class="road-title">Validación en video real de granja</div>
+        <div class="road-desc">Pruebas con video de instalaciones reales. Identificación individual de animales, eliminación de falsos positivos, detección en condiciones de amontonamiento.</div>
+      </div>
+      <div class="road-item current">
+        <div class="road-phase current">→ En curso</div>
+        <div class="road-title">Documentación técnica y búsqueda de financiamiento</div>
+        <div class="road-desc">Tesis académica en desarrollo. Aplicación a programas de apoyo agrotecnológico. Construcción de marca y validación pública del proyecto.</div>
+      </div>
+      <div class="road-item">
+        <div class="road-phase next">Próximo</div>
+        <div class="road-title">Piloto en granja real — ICA UABC</div>
+        <div class="road-desc">Instalación del sistema en las postas porcinas del ICA. Primera prueba en producción continua. Recopilación de datos para ajuste fino definitivo.</div>
+      </div>
+      <div class="road-item">
+        <div class="road-phase next">Futuro</div>
+        <div class="road-title">Módulo de estimación de peso y alertas</div>
+        <div class="road-desc">Integración de cálculo de biomasa, termometría infrarroja y sistema de alertas en tiempo real al dispositivo del productor.</div>
+      </div>
+      <div class="road-item">
+        <div class="road-phase next">Futuro</div>
+        <div class="road-title">Comercialización — PorciData MX</div>
+        <div class="road-desc">Lanzamiento del producto comercial Pig-Scan bajo la umbrella de PorciData MX. Modelo de suscripción para granjas medianas (primeramente) en el norte de México.</div>
+      </div>
     </div>
-
-```
-<div class="card">
-  <span class="card-icon">📸</span>
-  <div class="card-title">Instagram — @la.rata.dev</div>
-  <div class="card-sub">Mundo expandido · La rata tiene vida propia</div>
-  <p>Reels: clips de 15–30 segundos del episodio (el momento más viral). Stories: la rata "entre episodios" — memes, polls, la rata respondiendo DMs en su voz. Carruseles: la lección del episodio en formato visual estático para guardar.</p>
-</div>
-
-<div class="card">
-  <span class="card-icon">▶️</span>
-  <div class="card-title">YouTube Shorts + Canal</div>
-  <div class="card-sub">Discovery Channel</div>
-  <p>Shorts: el mismo episodio de TikTok. Canal completo: versiones de 5–8 minutos con EXTENDED CUT — más caos, más detalle técnico, más personaje. YouTube paga mejor por minuto visto, es el tier premium de monetización a futuro.</p>
-</div>
-
-<div class="card">
-  <span class="card-icon">👾</span>
-  <div class="card-title">Discord + Newsletter</div>
-  <div class="card-sub">La comunidad real</div>
-  <p>Discord "Futuros Devs": canal donde la rata "dropea" el episodio primero, 24 horas antes del TikTok público. Los miembros pueden votar qué concepto aprende la rata en el próximo episodio. Newsletter semanal: las 3 cosas que casi destruyeron a la rata esta semana.</p>
-</div>
-```
-
-  </div>
-
-  <div class="callout" style="margin-top: 2rem;">
-    <strong>FLYWHEEL DE CONTENIDO</strong>
-    1 episodio animado → 3 clips de TikTok/Reels → 1 carrusel educativo → 1 meme del episodio → 1 poll "¿qué debería aprender next?" → el resultado del poll es el próximo episodio. El audience co-crea la serie.
   </div>
 </section>
 
 <div class="divider"></div>
 
-<!-- MONETIZACIÓN -->
-
-<section id="monetizacion">
-  <div class="section-label">07 — Revenue Streams</div>
-  <h2 class="section-title"><span>MONETIZACIÓN</span></h2>
-
-  <div class="grid-3">
-    <div class="money-card" data-amount="$$$">
-      <div class="money-label">Tier 1 — Inmediato</div>
-      <div class="money-title">Merch Digital</div>
-      <p>Wallpapers, stickers, fondos del cuarto de la rata, packs de iconos, el sprite sheet de emociones de la rata. Vendido vía Gumroad o Patreon. Precio: $3–$10. Tu audiencia ya quiere esto.</p>
+<!-- INVERSORES -->
+<section class="inversores" id="inversores">
+  <div class="inversores-inner">
+    <div class="reveal">
+      <div class="section-tag">Para inversores</div>
+      <h2 class="section-title">¿Por qué<br><span>PorciData MX?</span></h2>
     </div>
 
-```
-<div class="money-card" data-amount="$$$$">
-  <div class="money-label">Tier 2 — 3 meses</div>
-  <div class="money-title">Patrocinios</div>
-  <p>Brands de herramientas dev: Vercel, Railway, Cloudflare, Cursor AI. El pitch es perfecto: audiencia de devs en formación, alta intención de compra, estética que ninguna otra cuenta tiene. El alien puede ser el vocero del sponsor.</p>
-</div>
-
-<div class="money-card" data-amount="$$$$$">
-  <div class="money-label">Tier 3 — 6 meses</div>
-  <div class="money-title">Merch Físico</div>
-  <p>Stickers primero (bajo costo, alta demanda). Luego hoodies. Luego prints de edición limitada de las escenas. La estética Rat Fink tiene legado de merch — la gente COLECCIONA esto.</p>
-</div>
-
-<div class="money-card" data-amount="🔥">
-  <div class="money-label">Tier 4 — Largo Plazo</div>
-  <div class="money-title">Curso / Bootcamp</div>
-  <p>"Aprende con la Rata" — el curriculum completo de la Temporada 1 convertido en curso interactivo. La misma energía, formato más largo. Precio premium porque tiene identidad única en el mercado.</p>
-</div>
-
-<div class="money-card" data-amount="💎">
-  <div class="money-label">Tier 5 — Comunidad</div>
-  <div class="money-title">Patreon / Discord Premium</div>
-  <p>Episodios 24h antes. Voto en el próximo episodio. La rata responde tu pregunta de código en un micro-clip personalizado. Behind the scenes del proceso de producción.</p>
-</div>
-
-<div class="money-card" data-amount="🚀">
-  <div class="money-label">Tier 6 — Licensing</div>
-  <div class="money-title">IP Licensing</div>
-  <p>La rata como mascota de bootcamps, herramientas, conferencias de tecnología. La estética es tan única que el personaje tiene valor como IP independiente. Think: Clippy pero con personalidad real.</p>
-</div>
-```
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PRÓXIMOS PASOS -->
-
-<section>
-  <div class="section-label">08 — Action Plan</div>
-  <h2 class="section-title">PRÓXIMOS <span>PASOS</span></h2>
-
-  <div class="grid-2">
-    <div>
-      <div class="card" style="margin-bottom: 1rem;">
-        <div class="card-sub">Semana 1</div>
-        <div class="card-title">Sprite Sheet Emocional</div>
-        <p>Con Gemini AI, genera 12–15 poses clave de la rata: reposo, sorprendida, enojada, triunfante, muerta de vergüenza, en pánico, concentrada, confundida, con café, con teclado explotando, durmiendo, celebrando. Este es tu "actor" para toda la serie.</p>
+    <div class="inv-grid">
+      <div class="reveal">
+        <div class="inv-points">
+          <div class="inv-point">
+            <div class="inv-point-num">01</div>
+            <div>
+              <div class="inv-point-title">Mercado desatendido y enorme</div>
+              <div class="inv-point-text">México es el tercer productor de cerdo en América con más de 19 millones de cabezas. Menos del 5% tiene acceso a tecnología de monitoreo. Claro margen de oportunidad.</div>
+            </div>
+          </div>
+          <div class="inv-point">
+            <div class="inv-point-num">02</div>
+            <div>
+              <div class="inv-point-title">Tecnología funcional</div>
+              <div class="inv-point-text">El modelo existe, está entrenado y ha sido validado en condiciones reales de granja. Las métricas de 98.8% de detección son verificables.</div>
+            </div>
+          </div>
+          <div class="inv-point">
+            <div class="inv-point-num">03</div>
+            <div>
+              <div class="inv-point-title">Hardware accesible — ventaja competitiva</div>
+              <div class="inv-point-text">Funciona con cámaras de seguridad estándar y microcontroladores económicos. Diseñado para trabajar con cámaras comunes, reduciendo de gran manera los costos frente a soluciones actuales.</div>
+            </div>
+          </div>
+          <div class="inv-point">
+            <div class="inv-point-num">04</div>
+            <div>
+              <div class="inv-point-title">Founder técnico con respaldo académico</div>
+              <div class="inv-point-text">Desarrollado en el Instituto de Ciencias Agrícolas de la UABC — acceso directo a instalaciones reales y datos exclusivos.</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-```
-  <div class="card" style="margin-bottom: 1rem;">
-    <div class="card-sub">Semana 2</div>
-    <div class="card-title">Episodio Piloto — EP01: NULL POINTER</div>
-    <p>Produce el primer episodio completo usando el stack: Gemini → Kling → CapCut. Voz con ElevenLabs. Música con Suno. Target: 90 segundos. Este episodio es el template para todos los demás.</p>
-  </div>
-</div>
+      <div class="reveal" style="transition-delay: 0.2s">
+        <div style="background: var(--card); border: 1px solid var(--border); padding: 2.5rem;">
+          <div class="section-tag" style="margin-bottom: 1.5rem;">Etapa actual</div>
+          <div style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--white); letter-spacing: -0.02em; margin-bottom: 0.5rem;">Pre-Seed</div>
+          <div style="font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text); line-height: 1.8; margin-bottom: 2rem;">Buscando capital inicial para validar Pig-Scan en una granja real y construir el primer sistema funcional listo para pruebas de campo..</div>
 
-<div>
-  <div class="card" style="margin-bottom: 1rem;">
-    <div class="card-sub">Semana 3</div>
-    <div class="card-title">Testing y Ajuste</div>
-    <p>Publica EP01 en TikTok. Mide: retención en los primeros 3 segundos (debe ser +70%), completion rate (target +40%), comentarios sobre el concepto técnico. Ajusta el ritmo de edición según los datos.</p>
-  </div>
+          <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);">
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.68rem; color: rgba(176,176,160,0.5); text-transform: uppercase; letter-spacing: 0.1em;">Uso del capital</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Hardware piloto
+                Compra de cámaras, microcontroladores (edge computing) y estructura física para instalación en granja.</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">40%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Desarrollo de módulos
+              Optimización del modelo de visión (detección, pose y estimación de peso), incluyendo la infraestructura de cómputo necesaria para su entrenamiento y validación en condiciones reales</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">35%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Registro de IP y legal
+              Protección del desarrollo, marca y la estructura legal del proyecto.</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">15%</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="font-size: 0.82rem; color: var(--text);">Operación y validación
+              Instalación, pruebas reales y ajuste del sistema en un entorno productivo.</span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--orange);">10%</span>
+            </div>
+          </div>
 
-  <div class="card">
-    <div class="card-sub">Semana 4+</div>
-    <div class="card-title">Cadencia de Producción</div>
-    <p>1 episodio por semana, publicación los martes. Lunes = producción, domingo = edición final. Con el proceso optimizado, cada episodio toma 4–6 horas de producción total. Batch recording: 2 semanas de contenido en un fin de semana.</p>
-  </div>
-</div>
-```
-
+          <a href="#contacto" class="btn-primary" style="width: 100%; text-align: center; display: block;">Quiero saber más</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="reveal" style="text-align: center;">
+    <div class="section-tag" style="justify-content: center;">Contacto</div>
+    <h2 class="section-title">¿Te interesa<br><span>Pig-Scan?</span></h2>
+    <p class="section-body" style="margin: 0 auto; text-align: center;">
+      Ya seas productor porcino, inversionista, colaborador o medio de comunicación — aquí puedes contactar directamente al fundador.
+    </p>
+  </div>
+
+ <form class="contact-form reveal" action="https://formspree.io/f/xykbegjn" method="POST">
+  <div class="form-row">
+    <div class="form-group">
+      <label class="form-label">Nombre</label>
+      <!-- Agregamos name="nombre" -->
+      <input type="text" name="nombre" class="form-input" placeholder="Tu nombre completo" required>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <!-- Agregamos name="email" -->
+      <input type="email" name="email" class="form-input" placeholder="tu@email.com" required>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Eres...</label>
+    <!-- Agregamos name="perfil" -->
+    <select name="perfil" class="form-select" required>
+      <option value="" disabled selected>Selecciona tu perfil</option>
+      <option value="inversor">Inversionista / Fondo</option>
+      <option value="productor">Productor porcino</option>
+      <option value="colaborador">Colaborador / Socio potencial</option>
+      <option value="medio">Medio de comunicación</option>
+      <option value="otro">Otro</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Mensaje</label>
+    <!-- Agregamos name="mensaje" -->
+    <textarea name="mensaje" class="form-textarea" placeholder="Cuéntame qué te interesa del proyecto..." required></textarea>
+  </div>
+  
+  <!-- Cambiamos el texto del botón -->
+  <button type="submit" class="form-submit">ENVIAR MENSAJE</button>
+</form>
+
+  <div class="contact-alt">
+    ¿Prefieres directo? Escribe a <a href="mailto:porcidata.mx@gmail.com">porcidatamx@gmail.com</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <div class="footer-title">CODE OR DIE 💀</div>
-  <div class="footer-sub">Futuros Devs — Production Bible v1.0 — @charliee.dev1 · @la.rata.dev</div>
-  <div style="margin-top: 2rem; font-size: 0.65rem; color: rgba(200,200,212,0.3); letter-spacing: 0.2em;">
-    CONFIDENCIAL — TODOS LOS DERECHOS RESERVADOS
-  </div>
+  <div class="footer-brand">Porci<span>Data</span> MX</div>
+  <ul class="footer-links">
+    <li><a href="#problema">Problema</a></li>
+    <li><a href="#solucion">Solución</a></li>
+    <li><a href="#metricas">Métricas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 PorciData MX — Uzuel Ruiz</div>
 </footer>
 
 <script>
-  // Smooth scroll for nav links
-  document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', e => {
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Animate progress bars
+const bars = document.querySelectorAll('.progress-fill');
+const barObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.width = entry.target.style.width;
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+bars.forEach(bar => {
+  const target = bar.style.width;
+  bar.style.width = '0%';
+  setTimeout(() => barObserver.observe(bar), 100);
+  bar.addEventListener('transitionstart', () => {});
+  barObserver.observe(bar);
+});
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Mensaje enviado ✓';
+  btn.style.background = '#39FF14';
+  btn.style.color = '#0A0A08';
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensaje →';
+    btn.style.background = '';
+    btn.style.color = '';
+    e.target.reset();
+  }, 3000);
+}
+
+// Nav smooth
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
       e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   });
-
-  // Active nav highlight
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('nav a');
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { rootMargin: '-40% 0px -50% 0px' });
-
-  sections.forEach(s => observer.observe(s));
-
-  // Fade in on scroll
-  const fadeEls = document.querySelectorAll('.card, .char-card, .ep-card, .money-card, .arc-item');
-  const fadeObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        fadeObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  fadeEls.forEach(el => {
-    el.classList.add('fade-in');
-    fadeObserver.observe(el);
-  });
+});
 </script>
-
 </body>
 </html>
