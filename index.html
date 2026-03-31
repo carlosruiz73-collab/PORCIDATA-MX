@@ -1,1307 +1,245 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FUTUROS DEVS — PRODUCTION BIBLE</title>
+
+<title>UZL Labs — AI Vision Systems</title>
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Teko:wght@300;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Teko:wght@300;500;700&display=swap');
 
-:root {
-–neon: #39ff14;
-–purple: #8b00ff;
-–purple-light: #bf5fff;
-–black: #050508;
-–dark: #0d0d14;
-–card: #111118;
-–red: #ff2020;
-–yellow: #ffe600;
-–text: #c8c8d4;
+:root{
+--gold1:#f5d97b;
+--gold2:#d4af37;
+--gold3:#8b6b1f;
+--black:#050505;
+--dark:#0b0b0f;
+--card:#111114;
+--red:#ff2a2a;
+--text:#d6d6d6;
+--border:rgba(212,175,55,0.15);
 }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-body {
-background: var(–black);
-color: var(–text);
-font-family: ‘Space Mono’, monospace;
-overflow-x: hidden;
+body{
+background: radial-gradient(circle at top,#0a0a0a,#000);
+color:var(--text);
+font-family:'Space Mono',monospace;
+overflow-x:hidden;
 }
 
-/* –– NOISE OVERLAY –– */
-body::before {
-content: ‘’;
-position: fixed;
-inset: 0;
-background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
-pointer-events: none;
-z-index: 9999;
-opacity: 0.4;
+/* NOISE */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+pointer-events:none;
+z-index:9999;
 }
 
-/* –– HEADER –– */
-header {
-position: relative;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-text-align: center;
-padding: 4rem 2rem;
-overflow: hidden;
-}
-
-header::before {
-content: ‘’;
-position: absolute;
-inset: 0;
+/* HEADER */
+header{
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+position:relative;
+padding:2rem;
 background:
-radial-gradient(ellipse 80% 60% at 50% 50%, rgba(139,0,255,0.15) 0%, transparent 70%),
-radial-gradient(ellipse 40% 40% at 20% 80%, rgba(57,255,20,0.08) 0%, transparent 60%),
-radial-gradient(ellipse 30% 30% at 80% 20%, rgba(255,32,32,0.06) 0%, transparent 60%);
+radial-gradient(circle at 50% 50%,rgba(212,175,55,0.08),transparent 60%),
+radial-gradient(circle at 20% 80%,rgba(255,42,42,0.05),transparent 60%);
 }
 
-.scanlines {
-position: absolute;
-inset: 0;
-background: repeating-linear-gradient(
-0deg,
-transparent,
-transparent 2px,
-rgba(0,0,0,0.15) 2px,
-rgba(0,0,0,0.15) 4px
+.main-title{
+font-family:'Bebas Neue';
+font-size:clamp(5rem,15vw,14rem);
+line-height:0.85;
+letter-spacing:-0.02em;
+}
+
+.title-top{
+color:#fff;
+}
+
+/* 🔥 EFECTO LINGOTE */
+.title-main{
+background:linear-gradient(
+120deg,
+#fff 0%,
+var(--gold1) 25%,
+var(--gold2) 45%,
+var(--gold3) 60%,
+var(--gold1) 80%,
+#fff 100%
 );
-pointer-events: none;
-}
-
-.header-tag {
-font-family: ‘Space Mono’, monospace;
-font-size: 0.7rem;
-letter-spacing: 0.3em;
-color: var(–neon);
-text-transform: uppercase;
-border: 1px solid rgba(57,255,20,0.3);
-padding: 0.4rem 1.2rem;
-margin-bottom: 2rem;
-animation: pulse-border 2s ease-in-out infinite;
-}
-
-@keyframes pulse-border {
-0%, 100% { border-color: rgba(57,255,20,0.3); }
-50% { border-color: rgba(57,255,20,0.8); box-shadow: 0 0 20px rgba(57,255,20,0.3); }
-}
-
-.main-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(5rem, 15vw, 14rem);
-line-height: 0.85;
-letter-spacing: -0.02em;
-position: relative;
-z-index: 1;
-}
-
-.title-futuros {
-display: block;
-color: white;
-text-shadow: 0 0 40px rgba(255,255,255,0.1);
-}
-
-.title-devs {
-display: block;
-color: var(–neon);
-text-shadow: 0 0 60px rgba(57,255,20,0.6), 0 0 120px rgba(57,255,20,0.3);
-animation: flicker 4s ease-in-out infinite;
-}
-
-@keyframes flicker {
-0%, 95%, 100% { opacity: 1; }
-96% { opacity: 0.8; }
-97% { opacity: 1; }
-98% { opacity: 0.6; }
-99% { opacity: 1; }
-}
-
-.slogan {
-font-family: ‘Teko’, sans-serif;
-font-size: clamp(1.5rem, 4vw, 3rem);
-font-weight: 700;
-letter-spacing: 0.5em;
-color: var(–red);
-margin-top: 1.5rem;
-text-transform: uppercase;
-text-shadow: 0 0 30px rgba(255,32,32,0.5);
-}
-
-.header-meta {
-margin-top: 3rem;
-display: flex;
-gap: 2rem;
-flex-wrap: wrap;
-justify-content: center;
-font-size: 0.7rem;
-letter-spacing: 0.2em;
-color: rgba(200,200,212,0.5);
-text-transform: uppercase;
-}
-
-.scroll-indicator {
-position: absolute;
-bottom: 2rem;
-left: 50%;
-transform: translateX(-50%);
-font-size: 0.65rem;
-letter-spacing: 0.3em;
-color: var(–purple-light);
-animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-0%, 100% { transform: translateX(-50%) translateY(0); }
-50% { transform: translateX(-50%) translateY(8px); }
-}
-
-/* –– NAV –– */
-nav {
-position: sticky;
-top: 0;
-z-index: 100;
-background: rgba(5,5,8,0.95);
-backdrop-filter: blur(20px);
-border-bottom: 1px solid rgba(139,0,255,0.3);
-padding: 0 2rem;
-display: flex;
-gap: 0;
-overflow-x: auto;
-}
-
-nav a {
-font-family: ‘Space Mono’, monospace;
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: rgba(200,200,212,0.5);
-text-decoration: none;
-padding: 1rem 1.2rem;
-border-bottom: 2px solid transparent;
-white-space: nowrap;
-transition: all 0.2s;
-}
-
-nav a:hover, nav a.active {
-color: var(–neon);
-border-bottom-color: var(–neon);
-}
-
-/* –– SECTIONS –– */
-section {
-max-width: 1100px;
-margin: 0 auto;
-padding: 6rem 2rem;
-}
-
-.section-label {
-font-size: 0.65rem;
-letter-spacing: 0.4em;
-text-transform: uppercase;
-color: var(–purple-light);
-margin-bottom: 0.8rem;
-}
-
-.section-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: clamp(2.5rem, 6vw, 5rem);
-line-height: 1;
-color: white;
-margin-bottom: 3rem;
-}
-
-.section-title span {
-color: var(–neon);
-}
-
-/* –– DIVIDER –– */
-.divider {
-width: 100%;
-height: 1px;
-background: linear-gradient(90deg, transparent, var(–purple), transparent);
-margin: 0;
-opacity: 0.4;
-}
-
-/* –– CARDS –– */
-.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
-
-.card {
-background: var(–card);
-border: 1px solid rgba(139,0,255,0.2);
-padding: 2rem;
-position: relative;
-overflow: hidden;
-transition: border-color 0.3s, transform 0.3s;
-}
-
-.card::before {
-content: ‘’;
-position: absolute;
-top: 0; left: 0; right: 0;
-height: 2px;
-background: linear-gradient(90deg, var(–purple), var(–neon));
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.3s;
-}
-
-.card:hover {
-border-color: rgba(139,0,255,0.5);
-transform: translateY(-3px);
-}
-
-.card:hover::before { transform: scaleX(1); }
-
-.card-icon {
-font-size: 2.5rem;
-margin-bottom: 1rem;
-display: block;
-}
-
-.card-title {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.4rem;
-font-weight: 700;
-letter-spacing: 0.05em;
-color: white;
-margin-bottom: 0.5rem;
-}
-
-.card-sub {
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-color: var(–neon);
-text-transform: uppercase;
-margin-bottom: 0.8rem;
-}
-
-.card p {
-font-size: 0.8rem;
-line-height: 1.7;
-color: var(–text);
-}
-
-/* –– EPISODE FORMAT –– */
-.episode-strip {
-display: flex;
-gap: 0;
-margin-bottom: 3rem;
-border: 1px solid rgba(139,0,255,0.2);
-overflow: hidden;
-}
-
-.ep-segment {
-flex: 1;
-padding: 1.5rem 1rem;
-text-align: center;
-border-right: 1px solid rgba(139,0,255,0.2);
-position: relative;
-}
-
-.ep-segment:last-child { border-right: none; }
-
-.ep-time {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 2rem;
-color: var(–neon);
-display: block;
-line-height: 1;
-}
+background-size:200% auto;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 
-.ep-unit {
-font-size: 0.6rem;
-letter-spacing: 0.2em;
-color: var(–purple-light);
-text-transform: uppercase;
-display: block;
-margin-bottom: 0.5rem;
-}
-
-.ep-label {
-font-family: ‘Teko’, sans-serif;
-font-size: 1rem;
-font-weight: 700;
-color: white;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-}
-
-.ep-desc {
-font-size: 0.7rem;
-color: var(–text);
-margin-top: 0.3rem;
-line-height: 1.4;
-}
-
-.ep-0 { background: rgba(57,255,20,0.05); }
-.ep-1 { background: rgba(139,0,255,0.08); }
-.ep-2 { background: rgba(255,32,32,0.05); }
-.ep-3 { background: rgba(139,0,255,0.08); }
-.ep-4 { background: rgba(57,255,20,0.05); }
-
-/* –– STACK TABLE –– */
-.stack-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 0.8rem;
-}
-
-.stack-table th {
-font-family: ‘Teko’, sans-serif;
-font-size: 0.9rem;
-font-weight: 700;
-letter-spacing: 0.15em;
-text-transform: uppercase;
-padding: 0.8rem 1rem;
-text-align: left;
-border-bottom: 1px solid rgba(139,0,255,0.4);
-color: var(–purple-light);
-}
-
-.stack-table td {
-padding: 1rem;
-border-bottom: 1px solid rgba(139,0,255,0.1);
-vertical-align: top;
-line-height: 1.6;
-}
-
-.stack-table tr:hover td { background: rgba(139,0,255,0.05); }
-
-.tool-name {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.1rem;
-font-weight: 700;
-color: white;
-display: block;
-}
-
-.tool-cost {
-display: inline-block;
-font-size: 0.65rem;
-letter-spacing: 0.1em;
-padding: 0.15rem 0.5rem;
-border-radius: 2px;
-font-weight: 700;
-text-transform: uppercase;
-}
-
-.cost-free { background: rgba(57,255,20,0.15); color: var(–neon); }
-.cost-low { background: rgba(255,230,0,0.15); color: var(–yellow); }
-.cost-mid { background: rgba(255,32,32,0.15); color: var(–red); }
-
-.phase-badge {
-display: inline-block;
-font-size: 0.6rem;
-letter-spacing: 0.15em;
-padding: 0.2rem 0.6rem;
-border: 1px solid rgba(139,0,255,0.4);
-color: var(–purple-light);
-text-transform: uppercase;
-margin-bottom: 0.3rem;
-}
-
-/* –– CHARACTER CARDS –– */
-.char-card {
-background: var(–card);
-border: 1px solid rgba(139,0,255,0.2);
-overflow: hidden;
-transition: transform 0.3s, border-color 0.3s;
-}
-
-.char-card:hover {
-transform: translateY(-4px);
-border-color: var(–neon);
-}
-
-.char-header {
-padding: 2rem;
-background: linear-gradient(135deg, rgba(139,0,255,0.15), rgba(57,255,20,0.05));
-text-align: center;
-border-bottom: 1px solid rgba(139,0,255,0.2);
-}
-
-.char-emoji { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
-
-.char-name {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 1.8rem;
-color: white;
-display: block;
-}
-
-.char-role {
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-color: var(–neon);
-text-transform: uppercase;
-}
-
-.char-body { padding: 1.5rem; }
-
-.char-trait {
-display: flex;
-gap: 0.5rem;
-align-items: flex-start;
-margin-bottom: 0.6rem;
-font-size: 0.75rem;
-line-height: 1.5;
-}
-
-.char-trait::before {
-content: ‘▸’;
-color: var(–purple-light);
-flex-shrink: 0;
-margin-top: 0.05rem;
-}
-
-/* –– ARC TIMELINE –– */
-.arc-timeline {
-position: relative;
-padding-left: 3rem;
-}
-
-.arc-timeline::before {
-content: ‘’;
-position: absolute;
-left: 0.8rem;
-top: 0;
-bottom: 0;
-width: 2px;
-background: linear-gradient(180deg, var(–neon), var(–purple), var(–red));
-}
-
-.arc-item {
-position: relative;
-margin-bottom: 2.5rem;
-}
-
-.arc-item::before {
-content: ‘’;
-position: absolute;
-left: -2.45rem;
-top: 0.4rem;
-width: 10px;
-height: 10px;
-background: var(–neon);
-border: 2px solid var(–black);
-border-radius: 50%;
-box-shadow: 0 0 10px rgba(57,255,20,0.6);
-}
-
-.arc-season {
-font-size: 0.6rem;
-letter-spacing: 0.3em;
-color: var(–purple-light);
-text-transform: uppercase;
-margin-bottom: 0.3rem;
-}
-
-.arc-title {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.3rem;
-font-weight: 700;
-color: white;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-}
-
-.arc-desc {
-font-size: 0.8rem;
-line-height: 1.6;
-color: var(–text);
-margin-top: 0.3rem;
-}
-
-/* –– MONETIZATION –– */
-.money-card {
-background: var(–card);
-border: 1px solid rgba(57,255,20,0.15);
-padding: 2rem;
-position: relative;
-overflow: hidden;
-}
-
-.money-card::after {
-content: attr(data-amount);
-position: absolute;
-bottom: -0.5rem;
-right: 1rem;
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 4rem;
-color: rgba(57,255,20,0.06);
-pointer-events: none;
-line-height: 1;
-}
-
-.money-label {
-font-size: 0.6rem;
-letter-spacing: 0.3em;
-color: var(–neon);
-text-transform: uppercase;
-margin-bottom: 0.4rem;
-}
-
-.money-title {
-font-family: ‘Teko’, sans-serif;
-font-size: 1.5rem;
-font-weight: 700;
-color: white;
-letter-spacing: 0.05em;
-margin-bottom: 0.8rem;
-}
+text-shadow:
+0 0 15px rgba(212,175,55,0.4),
+0 0 40px rgba(212,175,55,0.2);
 
-.money-card p {
-font-size: 0.8rem;
-line-height: 1.7;
-color: var(–text);
+animation:shine 5s linear infinite;
 }
 
-/* –– EPISODE CARDS –– */
-.ep-card {
-background: var(–card);
-border: 1px solid rgba(139,0,255,0.15);
-padding: 0;
-overflow: hidden;
-transition: transform 0.3s, border-color 0.3s;
+@keyframes shine{
+0%{background-position:0%;}
+100%{background-position:200%;}
 }
 
-.ep-card:hover {
-transform: translateY(-4px);
-border-color: rgba(57,255,20,0.4);
+.slogan{
+margin-top:1rem;
+font-family:'Teko';
+font-size:2rem;
+letter-spacing:.4em;
+color:var(--red);
+text-shadow:0 0 20px rgba(255,42,42,0.6);
 }
 
-.ep-number {
-background: linear-gradient(135deg, rgba(139,0,255,0.2), rgba(57,255,20,0.1));
-padding: 1rem 1.5rem;
-display: flex;
-align-items: center;
-justify-content: space-between;
-border-bottom: 1px solid rgba(139,0,255,0.2);
+/* NAV */
+nav{
+position:sticky;
+top:0;
+background:rgba(0,0,0,0.85);
+backdrop-filter:blur(20px);
+border-bottom:1px solid var(--border);
+display:flex;
+overflow-x:auto;
 }
 
-.ep-num-text {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 2.5rem;
-line-height: 1;
-color: rgba(255,255,255,0.2);
+nav a{
+padding:1rem;
+font-size:.7rem;
+letter-spacing:.2em;
+text-decoration:none;
+color:#888;
+white-space:nowrap;
 }
 
-.ep-num-title {
-font-family: ‘Teko’, sans-serif;
-font-weight: 700;
-font-size: 1rem;
-letter-spacing: 0.05em;
-color: var(–neon);
-text-transform: uppercase;
-text-align: right;
+nav a:hover{
+color:var(--gold2);
+border-bottom:2px solid var(--gold2);
 }
 
-.ep-num-scene {
-font-size: 0.65rem;
-color: var(–text);
-text-align: right;
+/* SECTIONS */
+section{
+max-width:1100px;
+margin:auto;
+padding:5rem 2rem;
 }
-
-.ep-content { padding: 1.5rem; }
 
-.ep-content p {
-font-size: 0.78rem;
-line-height: 1.7;
-color: var(–text);
-margin-bottom: 1rem;
+.section-title{
+font-family:'Bebas Neue';
+font-size:clamp(2.5rem,6vw,5rem);
+color:#fff;
 }
 
-.ep-lesson {
-display: flex;
-align-items: center;
-gap: 0.5rem;
-font-size: 0.7rem;
-color: var(–purple-light);
-border-top: 1px solid rgba(139,0,255,0.2);
-padding-top: 1rem;
+.section-title span{
+background:linear-gradient(90deg,var(--gold1),var(--gold2));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-/* –– CALLOUT –– */
-.callout {
-background: rgba(57,255,20,0.04);
-border-left: 3px solid var(–neon);
-padding: 1.5rem 2rem;
-margin: 2rem 0;
-font-size: 0.85rem;
-line-height: 1.7;
+/* CARDS */
+.card{
+background:linear-gradient(145deg,#0d0d0d,#141414);
+border:1px solid var(--border);
+padding:2rem;
+transition:.3s;
 }
 
-.callout strong {
-color: var(–neon);
-font-family: ‘Teko’, sans-serif;
-font-size: 1rem;
-letter-spacing: 0.05em;
-display: block;
-margin-bottom: 0.3rem;
+.card:hover{
+transform:translateY(-5px);
+border-color:rgba(212,175,55,.4);
+box-shadow:0 10px 40px rgba(0,0,0,.8),0 0 20px rgba(212,175,55,.15);
 }
 
-/* –– FOOTER –– */
-footer {
-background: var(–card);
-border-top: 1px solid rgba(139,0,255,0.3);
-padding: 4rem 2rem;
-text-align: center;
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:1.5rem;
 }
 
-.footer-title {
-font-family: ‘Bebas Neue’, sans-serif;
-font-size: 3rem;
-color: var(–neon);
-text-shadow: 0 0 40px rgba(57,255,20,0.4);
-letter-spacing: 0.05em;
+/* FOOTER */
+footer{
+padding:4rem 2rem;
+text-align:center;
+border-top:1px solid var(--border);
+background:#000;
 }
 
-.footer-sub {
-font-size: 0.7rem;
-letter-spacing: 0.3em;
-color: rgba(200,200,212,0.4);
-margin-top: 0.5rem;
-text-transform: uppercase;
-}
+.footer-title{
+font-family:'Bebas Neue';
+font-size:3rem;
 
-/* –– RESPONSIVE –– */
-@media (max-width: 768px) {
-.episode-strip { flex-direction: column; }
-.ep-segment { border-right: none; border-bottom: 1px solid rgba(139,0,255,0.2); }
-nav a { font-size: 0.6rem; padding: 0.8rem 0.8rem; }
-}
+background:linear-gradient(90deg,var(--gold1),var(--gold2),var(--gold3));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 
-/* –– ANIMATIONS –– */
-.fade-in {
-opacity: 0;
-transform: translateY(20px);
-transition: opacity 0.6s, transform 0.6s;
+text-shadow:0 0 25px rgba(212,175,55,.4);
 }
 
-.fade-in.visible {
-opacity: 1;
-transform: translateY(0);
+.footer-sub{
+font-size:.7rem;
+letter-spacing:.3em;
+opacity:.5;
+margin-top:.5rem;
 }
 </style>
-
 </head>
+
 <body>
 
-<!-- HEADER -->
-
 <header>
-  <div class="scanlines"></div>
-  <div class="header-tag">Production Bible v1.0 — Confidencial</div>
-  <h1 class="main-title">
-    <span class="title-futuros">FUTUROS</span>
-    <span class="title-devs">DEVS</span>
-  </h1>
-  <div class="slogan">CODE OR DIE 💀</div>
-  <div class="header-meta">
-    <span>@charliee.dev1 · TikTok</span>
-    <span>@la.rata.dev · Instagram</span>
-    <span>Serie Animada — Temporada 1</span>
-    <span>60s–2min por episodio</span>
-  </div>
-  <div class="scroll-indicator">▼ SCROLL ▼</div>
+<h1 class="main-title">
+<span class="title-top">UZL</span>
+<span class="title-main">LABS</span>
+</h1>
+
+<div class="slogan">
+Hacemos visible lo invisible
+</div>
 </header>
 
 <nav>
-  <a href="#formato">Formato</a>
-  <a href="#stack">Stack</a>
-  <a href="#personajes">Personajes</a>
-  <a href="#arco">Arco Narrativo</a>
-  <a href="#episodios">Episodios</a>
-  <a href="#distribucion">Distribución</a>
-  <a href="#monetizacion">Monetización</a>
+<a href="#">Inicio</a>
+<a href="#">Proyectos</a>
+<a href="#">Tecnología</a>
+<a href="#">Contacto</a>
 </nav>
 
-<!-- FORMATO -->
-
-<section id="formato">
-  <div class="section-label">01 — Anatomía del Episodio</div>
-  <h2 class="section-title">EL <span>FORMATO</span></h2>
-
-  <div class="episode-strip">
-    <div class="ep-segment ep-0">
-      <span class="ep-time">0:00</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">COLD OPEN</div>
-      <div class="ep-desc">La rata ya en medio de la catástrofe. Sin contexto. Sin explicación.</div>
-    </div>
-    <div class="ep-segment ep-1">
-      <span class="ep-time">0:05</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">HOOK VISUAL</div>
-      <div class="ep-desc">Algo explota, falla o sale mal. La rata reacciona.</div>
-    </div>
-    <div class="ep-segment ep-2">
-      <span class="ep-time">0:15</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">PROBLEMA = CONCEPTO</div>
-      <div class="ep-desc">El problema de programación SE CONVIERTE en la catástrofe visual.</div>
-    </div>
-    <div class="ep-segment ep-3">
-      <span class="ep-time">0:45</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">SOLUCIÓN CAÓTICA</div>
-      <div class="ep-desc">La rata resuelve el problema de la manera más destructiva posible.</div>
-    </div>
-    <div class="ep-segment ep-4">
-      <span class="ep-time">1:50</span>
-      <span class="ep-unit">seg</span>
-      <div class="ep-label">PUNCHLINE + CTA</div>
-      <div class="ep-desc">Una frase memorable. "Sígueme antes de que esto explote también."</div>
-    </div>
-  </div>
-
-  <div class="callout">
-    <strong>REGLA DE ORO</strong>
-    El concepto de programación NO se explica — se VIVE. Si el episodio es sobre loops infinitos, la rata literalmente no puede salir de un cuarto que se repite. Si es sobre null pointers, algo desaparece inexplicablemente. La metáfora ES la historia.
-  </div>
-
-  <div class="grid-3">
-    <div class="card">
-      <span class="card-icon">🔥</span>
-      <div class="card-title">Estética Visual</div>
-      <p>Rat Fink / Ed Roth duro. Ojos saltados, proporciones imposibles, colores que duelen. Verde neón, morado, negro profundo. Todo se está destruyendo siempre.</p>
-    </div>
-    <div class="card">
-      <span class="card-icon">🎙️</span>
-      <div class="card-title">Estilo Narrativo</div>
-      <p>Voz en primera persona de la rata. Rápido, irreverente, como si te estuviera hablando directo y no tuviera tiempo. Nunca suena a tutorial.</p>
-    </div>
-    <div class="card">
-      <span class="card-icon">💥</span>
-      <div class="card-title">Regla de Ritmo</div>
-      <p>Corte de edición cada 1.5–3 segundos máximo. Si hay más de 4 segundos sin cambio visual, ya perdiste a tu audiencia de TikTok.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- STACK DE PRODUCCIÓN -->
-
-<section id="stack">
-  <div class="section-label">02 — Pipeline Sin Presupuesto</div>
-  <h2 class="section-title">EL <span>STACK</span></h2>
-
-  <table class="stack-table">
-    <thead>
-      <tr>
-        <th>Fase</th>
-        <th>Herramienta</th>
-        <th>Para qué</th>
-        <th>Costo</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="phase-badge">Ilustración</span></td>
-        <td>
-          <span class="tool-name">Gemini AI</span>
-          Prompts estilo Rat Fink/Ed Roth
-        </td>
-        <td>Escenas base, poses de la rata, props, fondos. Ya tienes el workflow. Genera 10–15 poses emocionales clave ("sprite sheet").</td>
-        <td><span class="tool-cost cost-free">Gratis</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Animación</span></td>
-        <td>
-          <span class="tool-name">Kling AI</span>
-          Image-to-video
-        </td>
-        <td>Toma tus ilustraciones estáticas y les da 5–8 segundos de movimiento creíble. Funciona perfecto con estética caricaturesca.</td>
-        <td><span class="tool-cost cost-low">~$10/mes</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Animación</span></td>
-        <td>
-          <span class="tool-name">Pika Labs</span>
-          Loop animation
-        </td>
-        <td>Loops perfectos para efectos: explosiones en loop, código cayendo, ojos de la rata vibrando. Ideal para elementos de fondo.</td>
-        <td><span class="tool-cost cost-free">Gratis (límite)</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Profundidad</span></td>
-        <td>
-          <span class="tool-name">LeiaPix</span>
-          2.5D Parallax
-        </td>
-        <td>Convierte ilustraciones 2D en escenas con profundidad cinematográfica. La cámara se mueve, los planos se separan. Muy impresionante.</td>
-        <td><span class="tool-cost cost-free">Gratis</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Voz</span></td>
-        <td>
-          <span class="tool-name">ElevenLabs</span>
-          Voice cloning
-        </td>
-        <td>Crea la voz oficial de la rata. O clona tu propia voz para que siempre suene consistente. Ronca, rápida, al borde del caos.</td>
-        <td><span class="tool-cost cost-low">~$5/mes</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Música</span></td>
-        <td>
-          <span class="tool-name">Suno AI</span>
-          Music generation
-        </td>
-        <td>Genera tracks punk/glitch/drum and bass únicos por episodio. Prompt: "chaotic lo-fi punk glitch 140bpm rat fink energy".</td>
-        <td><span class="tool-cost cost-free">Gratis (límite)</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Edición</span></td>
-        <td>
-          <span class="tool-name">CapCut</span>
-          Montaje final
-        </td>
-        <td>Monta todo como un TikTok agresivo. Cortes duros, zoom-ins, subtítulos kinéticos. El workflow que ya conoces.</td>
-        <td><span class="tool-cost cost-free">Gratis</span></td>
-      </tr>
-      <tr>
-        <td><span class="phase-badge">Extras</span></td>
-        <td>
-          <span class="tool-name">Runway ML</span>
-          Gen-3 Alpha
-        </td>
-        <td>Para tomas especiales donde necesitas más control. El alien, el espacio, efectos de código que caen en 3D.</td>
-        <td><span class="tool-cost cost-mid">~$15/mes</span></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="callout" style="margin-top: 2rem;">
-    <strong>COSTO TOTAL ESTIMADO: $15–$30/mes</strong>
-    Con Kling AI + ElevenLabs + Suno Premium ya tienes todo lo que necesitas para producir 4 episodios por mes. Runway es opcional para escenas premium. El ROI con un solo patrocinio cubre 6 meses de stack.
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PERSONAJES -->
-
-<section id="personajes">
-  <div class="section-label">03 — Universo de Personajes</div>
-  <h2 class="section-title"><span>PERSONAJES</span></h2>
-
-  <div class="grid-3">
-    <div class="char-card">
-      <div class="char-header">
-        <span class="char-emoji">🐀</span>
-        <span class="char-name">LA RATA</span>
-        <span class="char-role">Protagonista · @la.rata.dev</span>
-      </div>
-      <div class="char-body">
-        <div class="char-trait">Ya sabe programar, pero siempre de la manera más caótica posible. No es beginner — es experto que enseña como si estuviera al borde del colapso.</div>
-        <div class="char-trait">Vive en presente permanente. No planea. Cada episodio es la primera vez que le pasa algo así aunque le haya pasado 40 veces.</div>
-        <div class="char-trait">Cuarta pared destruida: te habla directo. Sabe que eres humano mirando una pantalla.</div>
-        <div class="char-trait">Filosofía: el código perfecto no existe. Solo existe el código que funciona AHORA antes de que todo explote.</div>
-      </div>
-    </div>
-
-```
-<div class="char-card">
-  <div class="char-header">
-    <span class="char-emoji">👽</span>
-    <span class="char-name">EL ALIEN</span>
-    <span class="char-role">Sidekick · "Zyx-9"</span>
-  </div>
-  <div class="char-body">
-    <div class="char-trait">Vino a la Tierra específicamente para aprender a programar. En su planeta saben matemáticas perfectas pero nunca han visto un bug.</div>
-    <div class="char-trait">Cada bug lo deja en shock existencial. "¿Por qué el undefined no es un error... hasta que sí lo es?"</div>
-    <div class="char-trait">Función narrativa: es el que hace las preguntas básicas que el espectador tiene pero no quiere decir.</div>
-    <div class="char-trait">Relación con la Rata: el único que genuinamente la admira aunque todo explote siempre.</div>
-  </div>
-</div>
-
-<div class="char-card">
-  <div class="char-header">
-    <span class="char-emoji">🦠</span>
-    <span class="char-name">BUG</span>
-    <span class="char-role">Villano · El Bug Boss</span>
-  </div>
-  <div class="char-body">
-    <div class="char-trait">No es un bug específico — es LA entidad del caos en el código. Aparece cuando la rata está cerca de terminar algo.</div>
-    <div class="char-trait">Diseño visual: mutante, blob con tentáculos de código corrupto, ojos que son símbolos de error (null, undefined, NaN).</div>
-    <div class="char-trait">No es malvado — es caótico neutral. Solo existe porque el código existe.</div>
-    <div class="char-trait">Cada temporada evoluciona: empieza como bug de sintaxis, escala a error de lógica, llega a problema de arquitectura.</div>
-  </div>
-</div>
-```
-
-  </div>
-
-  <div style="margin-top: 1.5rem;" class="grid-2">
-    <div class="card">
-      <span class="card-icon">🤖</span>
-      <div class="card-title">La IA del Cuarto</div>
-      <div class="card-sub">Personaje recurrente</div>
-      <p>Una IA atrapada en el setup de la rata. Da consejos técnicamente correctos pero completamente inútiles en el contexto del caos. Voz monótona. Siempre dice "Según la documentación oficial..."</p>
-    </div>
-    <div class="card">
-      <span class="card-icon">💀</span>
-      <div class="card-title">El Fantasma del Código Legacy</div>
-      <div class="card-sub">Aparición ocasional</div>
-      <p>El espíritu de un dev que escribió código terrible en los 90s y ahora está condenado a aparecer cuando alguien usa esas mismas malas prácticas. Trae sabiduría oscura.</p>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- ARCO NARRATIVO -->
-
-<section id="arco">
-  <div class="section-label">04 — Estructura de la Serie</div>
-  <h2 class="section-title">ARCO <span>NARRATIVO</span></h2>
-
-  <div class="grid-2">
-    <div>
-      <div class="arc-timeline">
-        <div class="arc-item">
-          <div class="arc-season">Temporada 1 — 12 episodios</div>
-          <div class="arc-title">🐀 El Origen del Caos</div>
-          <div class="arc-desc">La rata está atrapada en su cuarto. Cada episodio introduce un concepto de programación web (variables, funciones, loops, etc.) mientras el setup literalmente se destruye. Al final de la temporada: el cuarto explota completamente.</div>
-        </div>
-        <div class="arc-item">
-          <div class="arc-season">Temporada 2 — 12 episodios</div>
-          <div class="arc-title">🚗 En Fuga (Conceptos Intermedios)</div>
-          <div class="arc-desc">La rata huye del cuarto destruido en su carro caótico. Aprende mientras escapa: APIs, fetch, async/await, frameworks. El Bug Boss la persigue. El Alien la acompaña.</div>
-        </div>
-        <div class="arc-item">
-          <div class="arc-season">Temporada 3 — 12 episodios</div>
-          <div class="arc-title">🚀 El Espacio (Avanzado)</div>
-          <div class="arc-desc">La nave alienígena. Backend, bases de datos, DevOps, deployment. La rata tiene que mantener los sistemas de la nave funcionando mientras navegan hacia "El Servidor Final" donde vive el Bug Boss definitivo.</div>
-        </div>
-        <div class="arc-item">
-          <div class="arc-season">Temporada 4+</div>
-          <div class="arc-title">🌍 El Multiverso del Código</div>
-          <div class="arc-desc">Japón neón, ciudades distópicas, dimensiones paralelas. La rata es ya una leyenda. Empieza a encontrar otros devs caóticos alrededor del mundo. Expansión del universo.</div>
-        </div>
-      </div>
-    </div>
-
-```
-<div>
-  <div class="callout">
-    <strong>DECISIÓN CLAVE DE NARRATIVA</strong>
-    La rata NO aprende de cero. Ya sabe programar. Esto la diferencia de todos los canales educativos. Ella enseña — pero desde el caos, no desde el dominio. La lección siempre viene DESPUÉS de que algo sale terriblemente mal.
-  </div>
-
-  <div style="margin-top: 1.5rem;" class="card">
-    <div class="card-title">Continuidad Ligera</div>
-    <p style="font-size: 0.8rem; line-height: 1.7;">Cada episodio funciona SOLO — no necesitas ver los anteriores. Pero hay elementos continuos: el setup del cuarto se destruye gradualmente, el Bug Boss evoluciona, el Alien aprende. Los fans que ven todo ven una historia. Los nuevos pueden entrar en cualquier punto.</p>
-  </div>
-
-  <div style="margin-top: 1rem;" class="card">
-    <div class="card-title">El Meta-Arco</div>
-    <p style="font-size: 0.8rem; line-height: 1.7;">La pregunta que nunca se responde directamente: ¿la rata programa para vivir o vive para programar? El CODE OR DIE no es un slogan — es la condición de existencia de este personaje. Cada episodio es evidencia de eso.</p>
-  </div>
-</div>
-```
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- EPISODIOS PILOTO -->
-
-<section id="episodios">
-  <div class="section-label">05 — Temporada 1</div>
-  <h2 class="section-title">EPISODIOS <span>PILOTO</span></h2>
-
-  <div class="grid-2">
-    <div class="ep-card">
-      <div class="ep-number">
-        <div class="ep-num-text">01</div>
-        <div>
-          <div class="ep-num-title">NULL POINTER</div>
-          <div class="ep-num-scene">📍 El Cuarto</div>
-        </div>
-      </div>
-      <div class="ep-content">
-        <p>La rata busca su café. No está. Busca el cargador. No está. Busca al Alien. No está. Todo existe pero devuelve null. La rata entra en crisis existencial hasta que conecta: esto es exactamente lo que pasa cuando llamas a algo que no fue inicializado. Resuelve el problema del café (lo había dejado floating en una variable sin asignar) y el cuarto explota de todas formas.</p>
-        <div class="ep-lesson">🧠 Concepto: Variables, null vs undefined, inicialización</div>
-      </div>
-    </div>
-
-```
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">02</div>
-    <div>
-      <div class="ep-num-title">INFINITE LOOP</div>
-      <div class="ep-num-scene">📍 El Cuarto (mismo de siempre)</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata se despierta, hace café, se sienta, el setup explota, la rata se despierta... El episodio literalmente se repite 3 veces con variaciones sutiles antes de que la rata se dé cuenta. El Alien está ahí desde el inicio pero no puede romper el loop — solo puede agregar un break condition. Termina con el cuarto destruido de una manera diferente cada vez.</p>
-    <div class="ep-lesson">🧠 Concepto: Loops, condiciones de parada, recursión accidental</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">03</div>
-    <div>
-      <div class="ep-num-title">MERGE CONFLICT</div>
-      <div class="ep-num-scene">📍 El Cuarto + Nave Alien</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata y el Alien intentan trabajar en el mismo proyecto simultáneamente. Objetos del cuarto empiezan a existir en dos versiones al mismo tiempo: hay DOS ratas, DOS teclados, DOS cafés — pero incompatibles. La rata tiene que hacer un merge manual de la realidad. Una de las versiones gana. La otra explota.</p>
-    <div class="ep-lesson">🧠 Concepto: Git, merge conflicts, versioning, branching</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">04</div>
-    <div>
-      <div class="ep-num-title">ASYNC / AWAIT</div>
-      <div class="ep-num-scene">📍 La Ciudad Neón</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata encarga pizza. Pizza llega antes que el hambre. El carro arranca antes de poner la llave. Todo pasa en el orden equivocado. La rata tiene que aprender a esperar — lo cual es literalmente la cosa más difícil para este personaje. El Alien explica promises mientras el carro se incendia.</p>
-    <div class="ep-lesson">🧠 Concepto: Async/await, promises, callbacks, event loop</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">05</div>
-    <div>
-      <div class="ep-num-title">BUG BOSS</div>
-      <div class="ep-num-scene">📍 El Cuarto Destruido</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>Primera aparición del Bug Boss. La rata lleva 3 horas debuggeando algo que "debería funcionar" y no puede encontrar el error. El Bug Boss materializa desde el código: no hay errores de sintaxis, no hay errores de lógica — es un error de LÓGICA DE NEGOCIO. La rata tiene que entender qué quería hacer antes de poder arreglarlo.</p>
-    <div class="ep-lesson">🧠 Concepto: Types of bugs, debugging methodologies, rubber duck debugging</div>
-  </div>
-</div>
-
-<div class="ep-card">
-  <div class="ep-number">
-    <div class="ep-num-text">06</div>
-    <div>
-      <div class="ep-num-title">LA PLAYA DE PROD</div>
-      <div class="ep-num-scene">📍 La Playa</div>
-    </div>
-  </div>
-  <div class="ep-content">
-    <p>La rata deployó algo "en vacaciones" porque "era un cambio pequeño". Está en la playa con el Alien cuando todo empieza a explotar en producción. Tiene que hacer hotfix desde el celular, con WiFi de 2 barras, con el sol reflejándose en la pantalla. El oceáno literalmente se tiñe de rojo. Deploy desde la playa.</p>
-    <div class="ep-lesson">🧠 Concepto: Deployment, environments, hotfixes, "never deploy on Friday"</div>
-  </div>
-</div>
-```
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- DISTRIBUCIÓN -->
-
-<section id="distribucion">
-  <div class="section-label">06 — Estrategia de Plataformas</div>
-  <h2 class="section-title">DISTRIBUCIÓN <span>Y GROWTH</span></h2>
-
-  <div class="grid-2">
-    <div class="card">
-      <span class="card-icon">📱</span>
-      <div class="card-title">TikTok — @charliee.dev1</div>
-      <div class="card-sub">Canal Principal · Episodios completos</div>
-      <p>Episodios completos de 60s–2min. Formato vertical nativo. El algoritmo de TikTok favorece contenido educativo con buena retención — y tu formato de cortes rápidos está hecho para eso. Publica martes y jueves a las 7pm–9pm hora local para máximo alcance.</p>
-    </div>
-
-```
-<div class="card">
-  <span class="card-icon">📸</span>
-  <div class="card-title">Instagram — @la.rata.dev</div>
-  <div class="card-sub">Mundo expandido · La rata tiene vida propia</div>
-  <p>Reels: clips de 15–30 segundos del episodio (el momento más viral). Stories: la rata "entre episodios" — memes, polls, la rata respondiendo DMs en su voz. Carruseles: la lección del episodio en formato visual estático para guardar.</p>
-</div>
-
-<div class="card">
-  <span class="card-icon">▶️</span>
-  <div class="card-title">YouTube Shorts + Canal</div>
-  <div class="card-sub">Discovery Channel</div>
-  <p>Shorts: el mismo episodio de TikTok. Canal completo: versiones de 5–8 minutos con EXTENDED CUT — más caos, más detalle técnico, más personaje. YouTube paga mejor por minuto visto, es el tier premium de monetización a futuro.</p>
-</div>
-
-<div class="card">
-  <span class="card-icon">👾</span>
-  <div class="card-title">Discord + Newsletter</div>
-  <div class="card-sub">La comunidad real</div>
-  <p>Discord "Futuros Devs": canal donde la rata "dropea" el episodio primero, 24 horas antes del TikTok público. Los miembros pueden votar qué concepto aprende la rata en el próximo episodio. Newsletter semanal: las 3 cosas que casi destruyeron a la rata esta semana.</p>
-</div>
-```
-
-  </div>
-
-  <div class="callout" style="margin-top: 2rem;">
-    <strong>FLYWHEEL DE CONTENIDO</strong>
-    1 episodio animado → 3 clips de TikTok/Reels → 1 carrusel educativo → 1 meme del episodio → 1 poll "¿qué debería aprender next?" → el resultado del poll es el próximo episodio. El audience co-crea la serie.
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- MONETIZACIÓN -->
-
-<section id="monetizacion">
-  <div class="section-label">07 — Revenue Streams</div>
-  <h2 class="section-title"><span>MONETIZACIÓN</span></h2>
-
-  <div class="grid-3">
-    <div class="money-card" data-amount="$$$">
-      <div class="money-label">Tier 1 — Inmediato</div>
-      <div class="money-title">Merch Digital</div>
-      <p>Wallpapers, stickers, fondos del cuarto de la rata, packs de iconos, el sprite sheet de emociones de la rata. Vendido vía Gumroad o Patreon. Precio: $3–$10. Tu audiencia ya quiere esto.</p>
-    </div>
-
-```
-<div class="money-card" data-amount="$$$$">
-  <div class="money-label">Tier 2 — 3 meses</div>
-  <div class="money-title">Patrocinios</div>
-  <p>Brands de herramientas dev: Vercel, Railway, Cloudflare, Cursor AI. El pitch es perfecto: audiencia de devs en formación, alta intención de compra, estética que ninguna otra cuenta tiene. El alien puede ser el vocero del sponsor.</p>
-</div>
-
-<div class="money-card" data-amount="$$$$$">
-  <div class="money-label">Tier 3 — 6 meses</div>
-  <div class="money-title">Merch Físico</div>
-  <p>Stickers primero (bajo costo, alta demanda). Luego hoodies. Luego prints de edición limitada de las escenas. La estética Rat Fink tiene legado de merch — la gente COLECCIONA esto.</p>
-</div>
-
-<div class="money-card" data-amount="🔥">
-  <div class="money-label">Tier 4 — Largo Plazo</div>
-  <div class="money-title">Curso / Bootcamp</div>
-  <p>"Aprende con la Rata" — el curriculum completo de la Temporada 1 convertido en curso interactivo. La misma energía, formato más largo. Precio premium porque tiene identidad única en el mercado.</p>
-</div>
-
-<div class="money-card" data-amount="💎">
-  <div class="money-label">Tier 5 — Comunidad</div>
-  <div class="money-title">Patreon / Discord Premium</div>
-  <p>Episodios 24h antes. Voto en el próximo episodio. La rata responde tu pregunta de código en un micro-clip personalizado. Behind the scenes del proceso de producción.</p>
-</div>
-
-<div class="money-card" data-amount="🚀">
-  <div class="money-label">Tier 6 — Licensing</div>
-  <div class="money-title">IP Licensing</div>
-  <p>La rata como mascota de bootcamps, herramientas, conferencias de tecnología. La estética es tan única que el personaje tiene valor como IP independiente. Think: Clippy pero con personalidad real.</p>
-</div>
-```
-
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- PRÓXIMOS PASOS -->
-
 <section>
-  <div class="section-label">08 — Action Plan</div>
-  <h2 class="section-title">PRÓXIMOS <span>PASOS</span></h2>
+<h2 class="section-title">PIG <span>SCAN</span></h2>
 
-  <div class="grid-2">
-    <div>
-      <div class="card" style="margin-bottom: 1rem;">
-        <div class="card-sub">Semana 1</div>
-        <div class="card-title">Sprite Sheet Emocional</div>
-        <p>Con Gemini AI, genera 12–15 poses clave de la rata: reposo, sorprendida, enojada, triunfante, muerta de vergüenza, en pánico, concentrada, confundida, con café, con teclado explotando, durmiendo, celebrando. Este es tu "actor" para toda la serie.</p>
-      </div>
-
-```
-  <div class="card" style="margin-bottom: 1rem;">
-    <div class="card-sub">Semana 2</div>
-    <div class="card-title">Episodio Piloto — EP01: NULL POINTER</div>
-    <p>Produce el primer episodio completo usando el stack: Gemini → Kling → CapCut. Voz con ElevenLabs. Música con Suno. Target: 90 segundos. Este episodio es el template para todos los demás.</p>
-  </div>
+<div class="grid">
+<div class="card">
+<h3>Visión Artificial</h3>
+<p>Monitoreo en tiempo real para porcicultura usando inteligencia artificial avanzada.</p>
 </div>
 
-<div>
-  <div class="card" style="margin-bottom: 1rem;">
-    <div class="card-sub">Semana 3</div>
-    <div class="card-title">Testing y Ajuste</div>
-    <p>Publica EP01 en TikTok. Mide: retención en los primeros 3 segundos (debe ser +70%), completion rate (target +40%), comentarios sobre el concepto técnico. Ajusta el ritmo de edición según los datos.</p>
-  </div>
-
-  <div class="card">
-    <div class="card-sub">Semana 4+</div>
-    <div class="card-title">Cadencia de Producción</div>
-    <p>1 episodio por semana, publicación los martes. Lunes = producción, domingo = edición final. Con el proceso optimizado, cada episodio toma 4–6 horas de producción total. Batch recording: 2 semanas de contenido en un fin de semana.</p>
-  </div>
+<div class="card">
+<h3>Datos en Vivo</h3>
+<p>Análisis automático de comportamiento, salud y rendimiento.</p>
 </div>
-```
 
-  </div>
+<div class="card">
+<h3>Escalable</h3>
+<p>Sistema adaptable desde pequeños ranchos hasta producción industrial.</p>
+</div>
+</div>
 </section>
 
 <footer>
-  <div class="footer-title">CODE OR DIE 💀</div>
-  <div class="footer-sub">Futuros Devs — Production Bible v1.0 — @charliee.dev1 · @la.rata.dev</div>
-  <div style="margin-top: 2rem; font-size: 0.65rem; color: rgba(200,200,212,0.3); letter-spacing: 0.2em;">
-    CONFIDENCIAL — TODOS LOS DERECHOS RESERVADOS
-  </div>
+<div class="footer-title">UZL LABS</div>
+<div class="footer-sub">© 2026 — Uzuel Ruiz</div>
 </footer>
-
-<script>
-  // Smooth scroll for nav links
-  document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  // Active nav highlight
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('nav a');
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { rootMargin: '-40% 0px -50% 0px' });
-
-  sections.forEach(s => observer.observe(s));
-
-  // Fade in on scroll
-  const fadeEls = document.querySelectorAll('.card, .char-card, .ep-card, .money-card, .arc-item');
-  const fadeObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        fadeObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  fadeEls.forEach(el => {
-    el.classList.add('fade-in');
-    fadeObserver.observe(el);
-  });
-</script>
 
 </body>
 </html>
