@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UZL Labs — AI Vision Systems</title>
+<title>UZL Labs — Vision AI Systems</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap');
 
 :root {
   --gold: #D4AF37;
-  --gold-soft: #8B6B1F;
-  --black: #0A0A0A;
-  --dark: #111;
-  --card: #151515;
-  --text: #D6D6C8;
-  --white: #fff;
-  --border: rgba(212,175,55,0.2);
+  --gold-soft: #B8962E;
+  --black: #070707;
+  --dark: #0F0F0F;
+  --card: #121212;
+  --text: #CFCFCF;
+  --white: #FFFFFF;
+  --border: rgba(212,175,55,0.15);
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -24,27 +24,34 @@
 body {
   background: var(--black);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 /* NAV */
 nav {
   position: fixed;
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1.2rem 2rem;
   display: flex;
   justify-content: space-between;
-  background: rgba(0,0,0,0.8);
+  align-items: center;
+  background: rgba(7,7,7,0.75);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  z-index: 100;
 }
 
 .nav-brand {
-  font-family: 'Syne';
-  font-weight: 800;
+  font-weight: 700;
   color: var(--white);
+  letter-spacing: 0.12em;
+  font-size: 0.9rem;
 }
 
-.nav-brand span { color: var(--gold); }
+.nav-brand span {
+  color: var(--gold);
+}
 
 /* HERO */
 .hero {
@@ -52,35 +59,87 @@ nav {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 6rem 2rem;
+  padding: 7rem 2rem;
+  position: relative;
+}
+
+/* glow suave */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(212,175,55,0.08), transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .hero h1 {
-  font-family: 'Syne';
-  font-size: 3rem;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4rem);
   color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
-.hero h1 span { color: var(--gold); }
+.hero h1 span {
+  color: var(--gold);
+}
 
 .hero p {
-  margin-top: 1rem;
-  max-width: 500px;
+  margin-top: 1.5rem;
+  max-width: 520px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.hero-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
 }
 
 /* BUTTON */
 .btn {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   display: inline-block;
-  background: var(--gold);
-  color: black;
-  padding: 0.8rem 1.5rem;
+  background: transparent;
+  color: var(--gold);
+  padding: 0.8rem 1.6rem;
   text-decoration: none;
+  border: 1px solid var(--gold);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--gold);
+  color: var(--black);
+  transform: translateY(-2px);
 }
 
 /* SECTION */
 section {
-  padding: 5rem 2rem;
+  padding: 6rem 2rem;
+}
+
+/* CARD SIMPLE */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  max-width: 600px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
 }
 
 /* FOOTER */
@@ -93,52 +152,61 @@ footer {
 }
 
 .footer-brand {
-  font-family: 'Syne';
-  font-weight: 800;
+  font-weight: 700;
   color: var(--white);
+  letter-spacing: 0.12em;
 }
 
-.footer-brand span { color: var(--gold); }
+.footer-brand span {
+  color: var(--gold);
+}
 
 .footer-copy {
-  font-size: 0.8rem;
-  opacity: 0.6;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
 }
 
-/* FIX IMPORTANTE */
+/* FIX */
 html, body {
   height: 100%;
 }
-
 </style>
 </head>
 
 <body>
 
 <nav>
-  <div class="nav-brand">UZL<span>.Labs</span></div>
+  <div class="nav-brand">UZL <span>· LABS</span></div>
 </nav>
 
 <section class="hero">
+
+  <div class="hero-tag">VISION AI · SISTEMAS INTELIGENTES</div>
+
   <h1>
-    We make the<br>
-    <span>unseen visible</span>
+    Hacemos visible<br>
+    lo <span>invisible</span>
   </h1>
 
   <p>
-    Vision artificial aplicada al mundo real. Desde porcicultura hasta sistemas de análisis inteligente.
+    Construimos sistemas de visión artificial capaces de interpretar el mundo físico en tiempo real. Pig-Scan es nuestro primer sistema aplicado a la industria porcina.
   </p>
 
   <a href="#" class="btn">Ver proyecto</a>
+
 </section>
 
 <section>
-  <h2 style="color:white;">Pig-Scan</h2>
-  <p>Sistema de visión artificial para monitoreo porcino en tiempo real.</p>
+  <div class="card">
+    <h2 style="color:white; margin-bottom:0.5rem;">Pig-Scan</h2>
+    <p>
+      Sistema de monitoreo porcino basado en visión artificial. Detección, análisis biométrico y comportamiento en tiempo real sin hardware especializado.
+    </p>
+  </div>
 </section>
 
 <footer>
-  <div class="footer-brand">UZL<span>.Labs</span></div>
+  <div class="footer-brand">UZL <span>· LABS</span></div>
   <div class="footer-copy">© 2026 — Uzuel Ruiz</div>
 </footer>
 
